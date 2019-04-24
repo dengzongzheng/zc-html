@@ -1,84 +1,42 @@
 import axios from 'axios'
 import {rootPath} from './config'
 
-// 请求列表
-const requestList = []
-// 取消列表
-const CancelToken = axios.CancelToken
-let sources = {}
+// 全局设定请求类型
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.baseURL = rootPath;
 
-// axios.defaults.timeout = 10000
-axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
-
-axios.defaults.baseURL = rootPath
-
-axios.interceptors.request.use((config) => {
-    const request = JSON.stringify(config.url) + JSON.stringify(config.data)
-
-    config.cancelToken = new CancelToken((cancel) => {
-        sources[request] = cancel
-    })
-
-    if(requestList.includes(request)){
-        sources[request]('取消重复请求')
-    }else{
-        requestList.push(request)
-        // store.dispatch('changeGlobalState', {loading: true})
-    }
-
-    // const token = store.getters.userInfo.token
-    if (token) {
-        config.headers.token = token
-    }
-
-    return config
-}, function (error) {
-    return Promise.reject(error)
-})
-
+//根据 axios api，对请求返回做拦截处理
 axios.interceptors.response.use(function (response) {
-    const request = JSON.stringify(response.config.url) + JSON.stringify(response.config.data)
-    requestList.splice(requestList.findIndex(item => item === request), 1)
-    if (requestList.length === 0) {
-        // store.dispatch('changeGlobalState', {loading: false})
-    }
-    if (response.data.code === 900401) {
-        window.ELEMENT.Message.error('认证失效，请重新登录！', 1000)
-        // router.push('/login')
-    }
-    return response
-}, function (error) {
-    if (axios.isCancel(error)) {
-        requestList.length = 0
-        throw new axios.Cancel('cancel request')
+    if (response.status >= 400 && response.status < 500) {
+        // 对返回状态码为 4xx 的请求统一处理
+        // 此处统一跳转 404 页面
+        window.location.href = decodeURI(`${window.location.protocol}//${window.location.host}/404.html`)
     } else {
-        window.ELEMENT.Message.error('网络请求失败', 1000)
+        return response
     }
-    return Promise.reject(error)
+}, function (error) {
+   console.log(error);
 })
 
-const request = function (url, params, config, method) {
-    return new Promise((resolve, reject) => {
-        axios[method](rootPath+url, params, Object.assign({}, config)).then(response => {
-            resolve(response.data)
-        }, err => {
-            if (err.Cancel) {
-                console.log(err)
-            } else {
-                reject(err)
-            }
-        }).catch(err => {
-            reject(err)
-        })
+let pget = function pget (url, params = {}) {
+    // 开始 loading
+    return axios.get(url, {
+        params: params,
+        validateStatus: function (status) {
+            // axios 底层采用 Promise 实现，下方表达式表示只有返回 code 为 2xx 才被正常返回（resolve），非 2xx 全部当做异常（reject）
+            return status >= 200 && status < 300
+        }
+    }).then(response => {
+        // 结束 loading
+        console.log(response.data);
+        // 返回后端返回数据
+        return response.data
+    }).catch(error => {
+        // 异常处理
+        console.log(error);
     })
 }
 
-const post = (url, params, config = {}) => {
-    return request(url, params, config, 'post')
+module.exports = {
+    pget:pget
 }
-
-const get = (url, params, config = {}) => {
-    return request(url, params, config, 'get')
-}
-
-export {sources, post, get}

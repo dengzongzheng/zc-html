@@ -1,6 +1,5 @@
 import React,{ Component } from 'react';
-import {rootPath} from '@/service/xhr/config';
-import axios from 'axios';
+import xhr from '@/service/xhr/index'
 
 export default class WebsiteList extends Component {
     constructor(props) {
@@ -13,18 +12,10 @@ export default class WebsiteList extends Component {
     }
 
     getList(param){
-        axios.get(rootPath+'/api/test')
-            .then(function (response) {
-                // handle success
-                console.log(response);
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
-            });
+       xhr.pget('/api/test',{}).then(function (data) {
+           console.log("data:"+data);
+       });
+
     }
 
     render() {
