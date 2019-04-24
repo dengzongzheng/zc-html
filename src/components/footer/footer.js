@@ -35,7 +35,7 @@ export default class extends Component {
             <hr className="hr" />
 
             <div className="footer-box">
-                COPYRIGHT © 2014-2023 XXXXX.COM CORPORATION. ALL RIGHTS RESERVED.
+                COPYRIGHT © 2019-2022 ZHENCANGYS.COM CORPORATION. ALL RIGHTS RESERVED.
             </div>
         </div>)
     }

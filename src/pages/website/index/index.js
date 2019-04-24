@@ -9,7 +9,7 @@ import Footer from '@components/footer/footer';
 function RenderGoods(props){
     const goods = props.goods;
     const items = goods.map((item)=>
-        <Link to="/detail">
+        <Link to={"/detail?productNo="+item.productNo} key={item.productNo}>
             <div className="goods">
                 <div className="img-box">
                     <img src={rootPath+"/"+item.productImage} className="goods-img" alt=""/>
