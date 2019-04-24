@@ -12,7 +12,7 @@ export default class WebsiteList extends Component {
     }
 
     getList(param){
-       xhr.pget('/api/test',{}).then(function (data) {
+       xhr.get('/api/test',{}).then(function (data) {
            console.log("data:"+data);
        });
 

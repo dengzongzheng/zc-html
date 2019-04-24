@@ -6,7 +6,7 @@ const routers = [
     {
         path:'/',
         exact:true,
-        component:WebsiteTest
+        component:WebsiteIndex
     },
     {
         path:'/index',

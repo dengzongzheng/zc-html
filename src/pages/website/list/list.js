@@ -1,6 +1,9 @@
 import React,{ Component } from 'react';
-import '../../../assets/css/common.css'
-import './list.css'
+import './list.css';
+import Header from '@components/header/header';
+import Nav from '@components/nav/nav';
+import Footer from '@components/footer/footer';
+
 
 
 export default class WebsiteList extends Component {
@@ -11,20 +14,8 @@ export default class WebsiteList extends Component {
     render() {
         return(
             <div>
-                <div className="header-box">
-                    <img src={require("../../../assets/images/header.png")} className="header-img" />
-                </div>
-                <div className="nav-box">
-
-                    <ul>
-                        <li><a href="#">磁器</a></li>
-                        <li><a href="#">玉器</a></li>
-                        <li><a href="#">书画</a></li>
-                        <li><a href="#">杂项</a></li>
-                        <li><a href="#">联系我们</a></li>
-                    </ul>
-
-                </div>
+                <Header></Header>
+                <Nav></Nav>
                 <div className="content-box">
 
                     <div className="content">
@@ -86,37 +77,8 @@ export default class WebsiteList extends Component {
             </span>
                     </div>
                 </div>
+            <Footer></Footer>
 
-                <hr className="hr" />
-
-                <ul className="nav nav-inline">
-                    <li className="nav-item">
-                        <span className="icon icon-bidding-lg"></span>
-                        <strong>随时随地</strong><br/>
-                        <strong>轻松购买</strong>
-                    </li>
-                    <li className="nav-item">
-                        <span className="icon icon-special-lg"></span>
-                        <strong>天天专场</strong><br/>
-                        <strong>畅选无忧</strong>
-                    </li>
-                    <li className="nav-item">
-                        <span className="icon icon-brand-lg"></span>
-                        <strong>品牌保证</strong><br/>
-                        <strong>精致服务</strong>
-                    </li>
-                    <li className="nav-item">
-                        <span className="icon icon-trust-lg"></span>
-                        <strong>邮币保真</strong><br/>
-                        <strong>快乐收藏</strong>
-                    </li>
-                </ul>
-
-                <hr className="hr" />
-
-                <div className="footer-box">
-                    COPYRIGHT © 2014-2023 XXXXX.COM CORPORATION. ALL RIGHTS RESERVED.
-                </div>
             </div>);
     }
 }

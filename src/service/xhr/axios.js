@@ -37,6 +37,18 @@ let pget = function pget (url, params = {}) {
     })
 }
 
+export function ppost (url, params = {}) {
+    // 开始 loading
+    return axios.post(url, params).then(response => {
+        // 结束 loading
+        return response.data
+    }).catch(error => {
+        // 异常处理
+        console.log(error);
+    })
+}
+
 module.exports = {
-    pget:pget
+    get:pget,
+    post:ppost
 }

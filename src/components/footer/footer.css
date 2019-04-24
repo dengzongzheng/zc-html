@@ -1,0 +1,85 @@
+/*footer*/
+.nav {
+    list-style: none;
+    margin-bottom: 42px;
+    text-align: center;
+    margin-right: 132px;
+    margin-left: 132px;
+}
+
+.nav-inline{
+    clear: both;
+}
+
+.nav-item{
+    position: relative;
+    width: 140px;
+    margin-left: 100px;
+    text-align: left;
+    display: inline-block;
+}
+
+.icon{
+    position: absolute;
+    left: -60px;
+    top: 0px;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    vertical-align: middle;
+    background: url(../../assets/images/online-icons.png) 0 0 no-repeat;
+}
+
+.icon-bidding-lg{
+    width: 55px;
+    height: 55px;
+    background-position: 0 -109px;
+}
+
+.icon.icon-special-lg {
+    width: 55px;
+    height: 55px;
+    background-position: -57px -109px;
+}
+
+.icon.icon-brand-lg {
+    width: 55px;
+    height: 55px;
+    background-position: -112px -109px;
+}
+
+.icon.icon-trust-lg {
+    width: 55px;
+    height: 55px;
+    background-position: -169px -109px;
+}
+
+ul:after{
+    padding-inline-start:0px;
+}
+
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 0px !important;
+}
+
+.hr{
+    margin: 0 132px;
+    background: #ccc;
+    border: none;
+    height: 1px;
+}
+
+.footer-box{
+    text-align: center;
+    line-height: 30px;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 72px;
+    margin-top: 30px;
+}

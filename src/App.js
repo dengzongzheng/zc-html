@@ -7,7 +7,7 @@ import {
     withRouter,
 } from 'react-router-dom'
 
-import './assets/css/App.css';
+import '@/assets/css/common.css';
 import routers from '@/routers/index';
 
 class App extends Component {
