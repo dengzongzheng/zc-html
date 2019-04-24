@@ -1,0 +1,132 @@
+
+.content-box{
+    margin: 0px 132px;
+}
+
+.content{
+    background: white;
+    margin-top: 42px;
+    margin-bottom: 42px;
+}
+
+.content-header{
+    height: 34px;
+}
+
+.content-header label{
+    font-size: 24px;
+    color: #444;
+}
+
+.content-header a{
+    display: inline-block;
+    text-decoration: none;
+    font-size: 18px;
+    color: #5182db;
+    float: right;
+    margin-right: 20px;
+    padding-top: 8px;
+    font-weight: lighter;
+}
+
+.head-line{
+    margin-right: 15px;
+    width: 5px;
+    height: 20px;
+    background-color: #dd4444;
+    display: inline-block;
+}
+
+.content-list{
+    border: 1px solid #e2e2e2;
+    border-top: 2px solid #dd4444;
+    padding: 8px;
+    margin-top: 20px;
+}
+
+
+.goods {
+    width: 240px;
+    border: 1px solid #e2e2e2;
+    box-shadow: 0 0 1px seashell inset;
+    padding: 20px;
+    display: inline-block;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    margin: 20px;
+    text-align: center;
+}
+.img-box{
+    text-align: center;
+}
+
+.goods-img{
+    max-width: 130px;
+    max-height: 130px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.title{
+    font-size: 20px;
+    font-weight: 400;
+    /*font-family: Verdana;*/
+    line-height: 26px;
+    height: 26px;
+    color: #444;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 52px;
+    text-align: left;
+}
+
+.sub-title{
+    font-style: normal;
+    font-size: 14px;
+    font-weight: lighter;
+    line-height: 24px;
+    height: 24px;
+    color: #444;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 52px;
+    text-align: left;
+}
+
+.goods-date{
+    font-size: 10px;
+    line-height: 20px;
+    font-weight: lighter;
+    color: #444;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 52px;
+    text-align: left;
+}
+
+.page-box{
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+
+.p-num a{
+    color: #333;
+    border: 1px solid #ddd;
+    background-color: #f7f7f7;
+    background-repeat: repeat-x;
+    background-image: -webkit-linear-gradient(top,#f7f7f7,#f2f2f2);
+    height: 36px;
+    line-height: 36px;
+    padding: 12px 12px;
+    margin-right: 5px;
+    font-size: 14px;
+    text-decoration: none;
+}

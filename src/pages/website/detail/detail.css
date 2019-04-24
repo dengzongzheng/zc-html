@@ -1,0 +1,99 @@
+.detail-content-box{
+    margin: 42px 132px;
+    background: white;
+}
+
+.left-box{
+    display: inline-block;
+    width: 40%;
+    float: left;
+}
+
+.spec-list{
+    overflow: hidden;
+    margin-bottom: 18px;
+    position: relative;
+    width: 350px;
+}
+
+.lh{
+    list-style: none;
+}
+
+.lh li{
+    margin: 0 2px;
+    display: inline-block;
+}
+
+.arrow-prev{
+    display: block;
+    width: 22px;
+    height: 32px;
+    float: left;
+    position: absolute;
+    cursor: pointer;
+    top: 50%;
+    margin-top: -16px;
+    left: 0;
+}
+
+.sprite-arrow-prev{
+    background: url("../../../assets/images/prev.png");
+    width: 22px;
+    height: 32px;
+    display: block;
+}
+
+.arrow-next{
+    display: block;
+    width: 22px;
+    height: 32px;
+    position: absolute;
+    cursor: pointer;
+    top: 50%;
+    margin-top: -16px;
+    right: 0;
+}
+
+.sprite-arrow-next{
+    background: url("../../../assets/images/next.png");
+    width: 22px;
+    height: 32px;
+    display: block;
+}
+
+.spec-items{
+    margin: 0 auto;
+    overflow: hidden;
+    width: 290px;
+}
+
+.detail-goods-img {
+    border: 0;
+    vertical-align: middle;
+    width: 350px;
+}
+
+
+.right-box{
+    display: inline-block;
+    width: 60%;
+}
+
+.title{
+    font: 700 16px Arial,"microsoft yahei";
+    color: #666;
+    padding-top: 10px;
+    line-height: 28px;
+    margin-bottom: 5px;
+}
+
+.desc{
+    color: #666;
+    line-height: 18px;
+    font: 12px/150% tahoma,arial,Microsoft YaHei,Hiragino Sans GB,"\u5b8b\u4f53",sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+.clear{
+    clear: both;
+}
