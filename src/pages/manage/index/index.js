@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import './index.css';
 import {Link} from "react-router-dom";
+import GoodsAdd from '@pages/manage/add/add';
 
 function RenderTBody(props) {
     const goods = props.goods;
@@ -108,6 +109,8 @@ export default class ManageIndex extends Component{
                         <a href="#" className="page-button">&gt;</a>
                     </div>
                 </div>
+
+                <GoodsAdd/>
             </div>
         )
 
