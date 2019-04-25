@@ -5,7 +5,10 @@ import {
     Link,
     Switch,
     withRouter,
+    hashHistory,
+    HashRouter
 } from 'react-router-dom'
+
 
 import '@/assets/css/common.css';
 import routers from '@/routers/index';
@@ -31,6 +34,7 @@ class App extends Component {
                         </Switch>
                     </main>
                 </Router>
+                <HashRouter history={hashHistory}/>
             </div>
         );
     }
