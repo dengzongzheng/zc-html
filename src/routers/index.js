@@ -2,7 +2,7 @@ import ManageRouters  from './manage-router';
 import WebsiteRouters from './website-router';
 
 const routers = [
-    ...WebsiteRouters,ManageRouters
+    ...ManageRouters,...WebsiteRouters
 ];
 
 export default routers;

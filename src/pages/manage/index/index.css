@@ -1,0 +1,122 @@
+.manage-box{
+    padding: 0 16px;
+}
+
+.header{
+    border-bottom: 1px solid #e8e8e8;
+    background: #fff;
+    line-height: 60px;
+    font-size: 16px;
+}
+
+.search-box{
+    padding: 10px 0px;
+}
+
+.search{
+    height: 30px;
+    border: 1px solid #e2e2e2;
+    line-height: 30px;
+    display: inline-block;
+    width: 300px;
+}
+
+.box{
+    display: inline-block;
+    margin-right: 30px;
+}
+
+.select-box{
+    width: 240px!important;
+    height: 30px;
+    border: 1px solid #e2e2e2;
+    line-height: 30px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0px;
+}
+
+.box button {
+    height: 30px;
+    width: 120px;
+    color: #ffffff;
+    border: none;
+    background: #00c1de;
+    cursor: pointer;
+}
+
+.box label{
+    font-weight: bold;
+}
+
+.table-style{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+}
+
+.thead{
+    background: #f7f7f7;
+    font-weight: 500;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+}
+
+.thead th{
+
+    height: 30px;
+    padding-left: 20px;
+}
+
+.no-data{
+    text-align: center;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.43);
+    height: 80px;
+}
+
+.page-box {
+    border-top: 1px solid #e8e8e8;
+}
+
+.page{
+    height: 30px;
+    float: right;
+}
+
+.count{
+    padding: 0 8px;
+}
+
+.page-button {
+    margin: 0 10px;
+    border: 1px solid #d9d9d9;
+    background-color: #fff;
+    border-radius: 4px;
+    color: black;
+    padding: 4px 8px;
+}
+
+.page-nums{
+    list-style: none;
+    display: inline-block;
+}
+
+.page-nums li {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.page-active{
+    background-color: #00c1de;
+    border-color: #00c1de;
+    padding: 4px 8px;
+    color: #ffffff;
+}
+
+.tbody tr{
+    height: 40px;
+}
