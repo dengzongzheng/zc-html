@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import './index.css';
+import {categories} from '@/constant/index';
 import {Link} from "react-router-dom";
 import GoodsAdd from '@pages/manage/add/add';
 
@@ -24,6 +25,18 @@ function RenderTBody(props) {
     }
 }
 
+function RenderSelect(propos) {
+
+    const categories = propos.categories;
+    const items = categories.map(item=>
+        <option key={item.value} value={item.value}>{item.name}</option>
+    )
+
+    return(
+        <select className="select-box">{items}</select>
+    )
+}
+
 
 function RenderPages(props) {
 
@@ -33,6 +46,7 @@ export default class ManageIndex extends Component{
     constructor(propos){
         super(propos);
         this.state = {
+            categories:categories,
             goods:[
                 {
                     productNo:"1",
@@ -46,11 +60,30 @@ export default class ManageIndex extends Component{
                productName:"",
                category:"0"
             },
-
             totalPages:14,
             pageNo:1,
-            pageSize:10
+            pageSize:10,
+            showPop:false
         }
+    }
+
+    toAddGoods(){
+        this.setState(state=>({
+            showPop: true
+        }));
+
+    }
+
+    saveHandler(props){
+        this.setState(state=>({
+            showPop: false
+        }));
+    }
+
+    cancelHandler (props){
+        this.setState(state=>({
+            showPop: false
+        }));
     }
 
     render(){
@@ -66,20 +99,14 @@ export default class ManageIndex extends Component{
 
                     <div className="box">
                         <label>类别：</label>
-                        <select className="select-box">
-                            <option>全部</option>
-                            <option>1类</option>
-                            <option>1类</option>
-                            <option>1类</option>
-                            <option>1类</option>
-                        </select>
+                        <RenderSelect categories={this.state.categories}/>
                     </div>
 
                     <div className="box">
                         <button>搜索</button>
                     </div>
 
-                    <div className="box"> <button>+新增</button></div>
+                    <div className="box"> <button onClick={()=>this.toAddGoods()}>+新增</button></div>
                 </div>
 
                 <div className="table-box">
@@ -110,7 +137,8 @@ export default class ManageIndex extends Component{
                     </div>
                 </div>
 
-                <GoodsAdd/>
+                <GoodsAdd showPop={this.state.showPop} saveHandler={()=>this.saveHandler()}
+                          cancelHandler={()=>this.cancelHandler()}/>
             </div>
         )
 
