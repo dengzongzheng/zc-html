@@ -5,39 +5,49 @@ import {
     Link,
     Switch,
     withRouter,
+    Redirect,
     hashHistory,
     HashRouter
-} from 'react-router-dom'
+} from 'react-router-dom';
 
-
+import ManageIndex from '@pages/manage/index/index';
 import '@/assets/css/common.css';
-import routers from '@/routers/index';
+import "antd/dist/antd.css";
+import routers from '@/routers/website-router';
+import Login from '@pages/manage/login/login';
 
-class App extends Component {
+function requireAuth(Layout, props) {
+    let flag = false;
+    if (flag) { // 未登录
+        return <Redirect to="/login" />;
+    } else {
+        return <Layout {...props} />
+    }
+}
+
+export default class App extends Component {
     render() {
         return (
             <div className="App">
-                <Router>
-                    <main>
-                        <Switch>
-                            {
-                                routers.map((route,index) => {
-                                    return(
-                                        <Route
-                                            key={index}
-                                            path={route.path}
-                                            exact={route.exact}
-                                            component={route.component}/>
-                                    )
-                                })
-                            }
-                        </Switch>
-                    </main>
-                </Router>
                 <HashRouter history={hashHistory}/>
+                <Router>
+                    <Switch>
+                        <Route exact path="/login" component={Login} />
+                        <Route path="/manage" component={props => requireAuth(ManageIndex, props)} />
+                        {
+                            routers.map((route,index) => {
+                                return(
+                                    <Route
+                                        key={index}
+                                        path={route.path}
+                                        exact={route.exact}
+                                        component={route.component}/>
+                                )
+                            })
+                        }
+                    </Switch>
+                </Router>
             </div>
         );
     }
 }
-
-export default App;

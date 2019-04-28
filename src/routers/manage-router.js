@@ -1,20 +1,24 @@
 import ManageIndex from '@pages/manage/index/index';
-import Login from '@pages/manage/login/login';
+
 import AddGoods from '@pages/manage/add/add';
+import DetailGoods from '@pages/manage/detail/detail';
+import UploadPic from '@pages/manage/upload/upload';
 
 const routers = [
     {
         path:'/manage',
         exact:true,
         component:ManageIndex,
-        childRoutes:[
-            { path: '/add', component: AddGoods },
+        needAuth:true,
+        routes:[
+            { path: '/manage/add', component: AddGoods },
+            { path: '/manage/detail', component: DetailGoods },
         ]
     },
     {
-        path:'/login',
+        path:'/upload',
         exact:true,
-        component:Login
+        component:UploadPic
     }
 ];
 

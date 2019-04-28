@@ -1,5 +1,6 @@
 import axios from 'axios'
-import {rootPath} from './config'
+import {rootPath} from './config';
+import {hashHistory} from 'react-router';
 
 // 全局设定请求类型
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -12,6 +13,8 @@ axios.interceptors.response.use(function (response) {
         // 此处统一跳转 404 页面
         window.location.href = decodeURI(`${window.location.protocol}//${window.location.host}/404.html`)
     } else {
+        // this.props.history.push('/login');
+        // window.location.href = decodeURI(`${window.location.protocol}//${window.location.host}/login`);
         return response
     }
 }, function (error) {

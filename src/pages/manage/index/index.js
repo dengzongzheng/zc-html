@@ -1,8 +1,12 @@
 import React,{Component} from 'react';
+import {Lifecycle, RouteContext} from 'react-router';
 import './index.css';
 import {categories} from '@/constant/index';
 import {Link} from "react-router-dom";
 import GoodsAdd from '@pages/manage/add/add';
+import { LocaleProvider, DatePicker, message } from 'antd';
+import xhr from '@/service/xhr/index';
+
 
 function RenderTBody(props) {
     const goods = props.goods;
@@ -20,6 +24,7 @@ function RenderTBody(props) {
                 <td>{item.updateDate}</td>
                 <td>{item.productName}</td>
                 <td>{item.productName}</td>
+                <td><Link to="/manage/detail">详情</Link></td>
             </tr>
         );
     }
@@ -65,6 +70,8 @@ export default class ManageIndex extends Component{
             pageSize:10,
             showPop:false
         }
+        // store.dispatch("fffff",)
+        // console.log(store.dispatch({type: 'GET_ACCESS_TOKEN', payLoad})
     }
 
     toAddGoods(){

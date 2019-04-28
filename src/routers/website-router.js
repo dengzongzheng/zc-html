@@ -1,7 +1,7 @@
 import WebsiteIndex from '@pages/website/index/index';
 import WebsiteDetail from '@pages/website/detail/detail';
 import WebsiteList from '@pages/website/list/list';
-import WebsiteTest from '@pages/website/test/test';
+import Login from '@pages/manage/login/login';
 const routers = [
     {
         path:'/',
@@ -22,6 +22,11 @@ const routers = [
         path:'/list',
         exact:true,
         component:WebsiteList
+    },
+    {
+        path:'/login',
+        exact:true,
+        component:Login
     }
 ];
 
