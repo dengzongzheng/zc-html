@@ -4,9 +4,9 @@ import './index.css';
 import {categories} from '@/constant/index';
 import {Link} from "react-router-dom";
 import GoodsAdd from '@pages/manage/add/add';
-import { LocaleProvider, DatePicker, message } from 'antd';
+import { Button, Pagination, message,Input,Select } from 'antd';
 import xhr from '@/service/xhr/index';
-
+const Search = Input.Search;
 
 function RenderTBody(props) {
     const goods = props.goods;
@@ -17,14 +17,14 @@ function RenderTBody(props) {
             </tr>
         )
     }else{
-        return goods.map((item)=>
+        return goods.map((item,index)=>
             <tr key={item.productNo}>
+                <td>{index+1}</td>
+                <td>{item.productNo}</td>
                 <td>{item.productName}</td>
-                <td>{item.updateDate}</td>
-                <td>{item.updateDate}</td>
-                <td>{item.productName}</td>
-                <td>{item.productName}</td>
-                <td><Link to="/manage/detail">详情</Link></td>
+                <td>{item.categoryName}</td>
+                <td>{item.direction}</td>
+                <td><Link to="/manage/detail">详情</Link>&nbsp;<Link to="/manage/detail">修改</Link></td>
             </tr>
         );
     }
@@ -57,21 +57,20 @@ export default class ManageIndex extends Component{
                     productNo:"1",
                     productName:"龟寿图紫砂壶",
                     direction:"龟寿图紫砂壶",
+                    categoryName:"磁器",
                     productImage:"1.png",
                     updateDate:"2019-04-08 19:23:02"
                 }
             ],
             param:{
                productName:"",
-               category:"0"
+                categoryCode:"0"
             },
             totalPages:14,
             pageNo:1,
             pageSize:10,
             showPop:false
         }
-        // store.dispatch("fffff",)
-        // console.log(store.dispatch({type: 'GET_ACCESS_TOKEN', payLoad})
     }
 
     toAddGoods(){
@@ -79,6 +78,14 @@ export default class ManageIndex extends Component{
             showPop: true
         }));
 
+    }
+
+    selectChange(event){
+        let param = this.state.param;
+        param["categoryCode"] = event;
+        this.setState({
+            param: param
+        });
     }
 
     saveHandler(props){
@@ -94,37 +101,54 @@ export default class ManageIndex extends Component{
     }
 
     render(){
+        const categories = this.state.categories;
+        const defaultValue = this.state.param.categoryCode;
+        let items = categories.map(item=>
+            <Select.Option key={item.value} value={item.value}>{item.name}</Select.Option>
+        );
+        items.push(<Select.Option key="0" value="0">全部</Select.Option>);
         return(
             <div className="manage-box">
                 <div className="header">
-                    1231231123123
+                    后台管理
                 </div>
                 <div className="search-box">
                     <div className="box">
-                        <input type="text" className="search" placeholder="请输入搜索条件"/><span/>
+                        <Search
+                            placeholder="请输入搜索条件"
+                            onSearch={value => console.log(value)}
+                            style={{ width: 400 }}
+                        />
                     </div>
 
                     <div className="box">
                         <label>类别：</label>
-                        <RenderSelect categories={this.state.categories}/>
+                        <Select defaultValue={defaultValue} type={"select"}
+                                style={{ width: 200}}
+                                name="categoryCode"
+                                onChange={(e)=>this.selectChange(e)}>{items}</Select>
                     </div>
 
                     <div className="box">
-                        <button>搜索</button>
+                        <Button type="primary" icon="search">搜索</Button>
                     </div>
 
-                    <div className="box"> <button onClick={()=>this.toAddGoods()}>+新增</button></div>
+                    <div className="box">
+                        <Button type="primary" onClick={()=>this.toAddGoods()} icon="folder-add">新增</Button>
+                    </div>
                 </div>
 
                 <div className="table-box">
                     <table className="table-style">
                         <thead className="thead">
-                            <th>测试1</th>
-                            <th>测试2</th>
-                            <th>测试3</th>
-                            <th>测试4</th>
-                            <th>测试5</th>
-                            <th>操作</th>
+                            <tr>
+                                <th>序号</th>
+                                <th>编号</th>
+                                <th>标题</th>
+                                <th>类别</th>
+                                <th>描述</th>
+                                <th>操作</th>
+                            </tr>
                         </thead>
                         <tbody className="tbody">
                             <RenderTBody goods={this.state.goods}></RenderTBody>
@@ -133,15 +157,8 @@ export default class ManageIndex extends Component{
                     </table>
                 </div>
 
-                <div className="page-box">
-                    <div className="page">
-                        共<span className="count">0</span>条
-                        <a href="#" className="page-button">&lt;</a>
-                        <ul className="page-nums">
-                            <li className="page-active">1</li>
-                        </ul>
-                        <a href="#" className="page-button">&gt;</a>
-                    </div>
+                <div className="page-box-2">
+                    <Pagination defaultCurrent={6} total={500} />
                 </div>
 
                 <GoodsAdd showPop={this.state.showPop} saveHandler={()=>this.saveHandler()}

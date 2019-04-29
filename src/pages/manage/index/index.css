@@ -53,7 +53,7 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    text-align: left;
+    text-align: center;
     border-radius: 4px 4px 0 0;
     overflow: hidden;
 }
@@ -66,9 +66,7 @@
 }
 
 .thead th{
-
     height: 30px;
-    padding-left: 20px;
 }
 
 .no-data{
@@ -78,8 +76,10 @@
     height: 80px;
 }
 
-.page-box {
+.page-box-2 {
     border-top: 1px solid #e8e8e8;
+    padding-top: 60px;
+    text-align: center;
 }
 
 .page{

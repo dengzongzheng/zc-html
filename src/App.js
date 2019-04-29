@@ -13,8 +13,8 @@ import {
 import ManageIndex from '@pages/manage/index/index';
 import '@/assets/css/common.css';
 import "antd/dist/antd.css";
-import routers from '@/routers/website-router';
-import Login from '@pages/manage/login/login';
+import routers from '@/routers/index';
+
 
 function requireAuth(Layout, props) {
     let flag = false;
@@ -32,7 +32,6 @@ export default class App extends Component {
                 <HashRouter history={hashHistory}/>
                 <Router>
                     <Switch>
-                        <Route exact path="/login" component={Login} />
                         <Route path="/manage" component={props => requireAuth(ManageIndex, props)} />
                         {
                             routers.map((route,index) => {
