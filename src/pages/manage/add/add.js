@@ -18,6 +18,7 @@ export default class AddGoods extends Component{
             ],
             param:{
                 categoryCode:1,
+                categoryName:"",
                 productName:"",
                 direction:"",
                 productImages:[]
@@ -65,9 +66,11 @@ export default class AddGoods extends Component{
         }));
     }
 
-    selectChange(event){
+    selectChange(event,option){
         let param = this.state.param;
+        console.log(option)
         param["categoryCode"] = event;
+        param["categoryName"] = option.props.children;
         this.setState({
             param: param
         });
@@ -132,7 +135,7 @@ export default class AddGoods extends Component{
                                 <Select defaultValue={defaultValue} type={"select"}
                                         style={{ width: 400,'marginLeft':20 }}
                                         name="categoryCode"
-                                        onChange={(e)=>this.selectChange(e)}>{items}</Select>
+                                        onChange={(e,option)=>this.selectChange(e,option)}>{items}</Select>
                             </div>
 
                         </div>

@@ -30,22 +30,7 @@ function RenderTBody(props) {
     }
 }
 
-function RenderSelect(propos) {
 
-    const categories = propos.categories;
-    const items = categories.map(item=>
-        <option key={item.value} value={item.value}>{item.name}</option>
-    )
-
-    return(
-        <select className="select-box">{items}</select>
-    )
-}
-
-
-function RenderPages(props) {
-
-}
 
 export default class ManageIndex extends Component{
     constructor(propos){
@@ -53,24 +38,31 @@ export default class ManageIndex extends Component{
         this.state = {
             categories:categories,
             goods:[
-                {
-                    productNo:"1",
-                    productName:"龟寿图紫砂壶",
-                    direction:"龟寿图紫砂壶",
-                    categoryName:"磁器",
-                    productImage:"1.png",
-                    updateDate:"2019-04-08 19:23:02"
-                }
             ],
             param:{
                productName:"",
-                categoryCode:"0"
+               categoryCode: 0,
+               pageNo:1,
+               pageSize:10
             },
-            totalPages:14,
-            pageNo:1,
-            pageSize:10,
+            totalPage:0,
             showPop:false
         }
+        this.searchGoodsList();
+    }
+
+    searchGoodsList(){
+        const param = this.state.param;
+        const that = this;
+        xhr.get('/manage/api/listGoods',param).then(function (data) {
+           console.log(data);
+           if(data.code=="1"){
+               that.setState(state=>({
+                   goods:data.data.data,
+                   totalPage:data.data.totalPage
+               }));
+           }
+        });
     }
 
     toAddGoods(){
@@ -83,6 +75,26 @@ export default class ManageIndex extends Component{
     selectChange(event){
         let param = this.state.param;
         param["categoryCode"] = event;
+        this.setState({
+            param: param
+        });
+    }
+
+    onSearch(value){
+        let param = this.state.param;
+        param["productName"] = value;
+        this.setState(state=>({
+            param: param
+        }));
+        this.searchGoodsList();
+    }
+
+    handleInputChange(event){
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        let param = this.state.param;
+        param[name] = value;
         this.setState({
             param: param
         });
@@ -106,7 +118,7 @@ export default class ManageIndex extends Component{
         let items = categories.map(item=>
             <Select.Option key={item.value} value={item.value}>{item.name}</Select.Option>
         );
-        items.push(<Select.Option key="0" value="0">全部</Select.Option>);
+        items.push(<Select.Option key={0} value={0}>全部</Select.Option>);
         return(
             <div className="manage-box">
                 <div className="header">
@@ -115,8 +127,9 @@ export default class ManageIndex extends Component{
                 <div className="search-box">
                     <div className="box">
                         <Search
-                            placeholder="请输入搜索条件"
-                            onSearch={value => console.log(value)}
+                            placeholder="请输入搜索条件" name={"productName"}
+                            onChange={(e)=>this.handleInputChange(e)}
+                            onSearch={value => this.onSearch(value)}
                             style={{ width: 400 }}
                         />
                     </div>
@@ -130,7 +143,7 @@ export default class ManageIndex extends Component{
                     </div>
 
                     <div className="box">
-                        <Button type="primary" icon="search">搜索</Button>
+                        <Button type="primary" icon="search" onClick={()=>this.searchGoodsList()}>搜索</Button>
                     </div>
 
                     <div className="box">
@@ -158,7 +171,7 @@ export default class ManageIndex extends Component{
                 </div>
 
                 <div className="page-box-2">
-                    <Pagination defaultCurrent={6} total={500} />
+                    <Pagination defaultCurrent={this.state.param.pageNo} total={this.state.totalPage} />
                 </div>
 
                 <GoodsAdd showPop={this.state.showPop} saveHandler={()=>this.saveHandler()}

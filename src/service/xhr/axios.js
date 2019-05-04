@@ -31,7 +31,6 @@ let pget = function pget (url, params = {}) {
         }
     }).then(response => {
         // 结束 loading
-        console.log(response.data);
         // 返回后端返回数据
         return response.data
     }).catch(error => {
