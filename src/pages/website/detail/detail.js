@@ -8,9 +8,11 @@ import {rootPath} from "@/service/xhr/config";
 
 function RenderDetail(props) {
     const goods = props.goods;
-
+    if(!goods.productImages){
+        return(<div/>);
+    }
     const items = goods.productImages.map(item=>
-        <li className="img-hover" key={item.productNo}>
+        <li className="img-hover" key={item}>
             <img alt="" src={rootPath+"/"+item} width="50" height="64" />
         </li>
     )

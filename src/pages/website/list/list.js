@@ -5,6 +5,7 @@ import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
 import {Link} from "react-router-dom";
 import {rootPath} from "@/service/xhr/config";
+import {Pagination} from 'antd';
 
 function RenderGoods(props){
     const goods = props.goods;
@@ -27,28 +28,7 @@ function RenderGoods(props){
     )
 }
 
-function RenderPages(props) {
 
-
-
-    return(
-        <div className="page-box">
-            <span className="p-num">
-                <a className="pn-prev disabled"><i>&lt;</i><em>上一页</em></a>
-                <a href="javascript:;" className="curr">1</a>
-                <a onClick="SEARCH.page(3, true)" href="javascript:;">2</a>
-                <a onClick="SEARCH.page(5, true)" href="javascript:;">3</a>
-                <a onClick="SEARCH.page(7, true)" href="javascript:;">4</a>
-                <a onClick="SEARCH.page(9, true)" href="javascript:;">5</a>
-                <a onClick="SEARCH.page(11, true)" href="javascript:;">6</a>
-                <a onClick="SEARCH.page(13, true)" href="javascript:;">7</a>
-                <b className="pn-break">...</b>
-                <a className="pn-next" onClick="SEARCH.page(3, true)" href="javascript:;"
-                   title="使用方向键右键也可翻到下一页哦！"><em>下一页</em><i>&gt;</i></a>
-            </span>
-        </div>
-    )
-}
 
 export default class WebsiteList extends Component {
     constructor(props){
@@ -63,13 +43,24 @@ export default class WebsiteList extends Component {
                     updateDate:"2019-04-08 19:23:02"
                 }
             ],
-            totalPages:14,
+            totalPages:1,
             pageNo:1,
-            pageSize:10
+            pageSize:10,
+            totalCount:0
         }
     }
     componentDidMount() {
         console.log('----componentDidMount-----');
+    }
+
+    pageChange(page, pageSize){
+        let param = this.state.param;
+        param["pageNo"] = page;
+        param["pageSize"] = pageSize;
+        this.setState(state=>({
+            param:param
+        }));
+        // this.searchGoodsList();
     }
 
     render() {
@@ -81,13 +72,17 @@ export default class WebsiteList extends Component {
                 <div className="content-box">
                     <div className="content">
                         <div className="content-header">
-                            <span className="head-line"></span><label>磁器</label>
+                            <span className="head-line"/><label>磁器</label>
                         </div>
                         <RenderGoods goods={list}></RenderGoods>
                     </div>
-
-                    <RenderPages></RenderPages>
-
+                    <div className="list-page-box">
+                    <Pagination defaultCurrent={1}
+                                defaultPageSize={this.pageSize}
+                                current={this.pageNo}
+                                total={this.totalCount}
+                                onChange={(page,pageSize)=>this.pageChange(page,pageSize)}/>
+                    </div>
                 </div>
             <Footer/>
 
