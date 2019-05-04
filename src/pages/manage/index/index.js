@@ -4,32 +4,10 @@ import './index.css';
 import {categories} from '@/constant/index';
 import {Link} from "react-router-dom";
 import GoodsAdd from '@pages/manage/add/add';
+import GoodsDetail from '@pages/manage/detail/detail';
 import { Button, Pagination, message,Input,Select } from 'antd';
 import xhr from '@/service/xhr/index';
 const Search = Input.Search;
-
-function RenderTBody(props) {
-    const goods = props.goods;
-    if(goods.length<=0){
-        return (
-            <tr>
-                <td colSpan="6" className="no-data">没有数据</td>
-            </tr>
-        )
-    }else{
-        return goods.map((item,index)=>
-            <tr key={item.productNo}>
-                <td>{index+1}</td>
-                <td>{item.productNo}</td>
-                <td>{item.productName}</td>
-                <td>{item.categoryName}</td>
-                <td>{item.direction}</td>
-                <td><Link to="/manage/detail">详情</Link>&nbsp;<Link to="/manage/detail">修改</Link></td>
-            </tr>
-        );
-    }
-}
-
 
 
 export default class ManageIndex extends Component{
@@ -43,10 +21,14 @@ export default class ManageIndex extends Component{
                productName:"",
                categoryCode: 0,
                pageNo:1,
-               pageSize:10
+               pageSize:2
             },
             totalPage:0,
-            showPop:false
+            totalCount:0,
+            showAddPop:false,
+            showDetailPop:false,
+            showEditPop:false,
+            detail:{}
         }
         this.searchGoodsList();
     }
@@ -59,15 +41,20 @@ export default class ManageIndex extends Component{
            if(data.code=="1"){
                that.setState(state=>({
                    goods:data.data.data,
-                   totalPage:data.data.totalPage
+                   totalPage:data.data.totalPage,
+                   totalCount:data.data.totalCount
                }));
            }
         });
     }
 
+    RenderTBody(props) {
+
+    }
+
     toAddGoods(){
         this.setState(state=>({
-            showPop: true
+            showAddPop: true
         }));
 
     }
@@ -102,14 +89,46 @@ export default class ManageIndex extends Component{
 
     saveHandler(props){
         this.setState(state=>({
-            showPop: false
+            showAddPop: false
         }));
     }
 
     cancelHandler (props){
         this.setState(state=>({
-            showPop: false
+            showAddPop: false
         }));
+    }
+
+    goodsDetail(productNo){
+        if (!productNo) {
+            return;
+        }
+        let param = {};
+        param["productNo"] = productNo;
+        const that = this;
+        xhr.get('/manage/api/detail',param).then(function (data) {
+            console.log(data);
+            that.setState(state=>({
+                showDetailPop: true,
+                detail:data.data
+            }));
+        });
+    }
+
+    cancelDetailHandler(props){
+        this.setState(state=>({
+            showDetailPop: false
+        }));
+    }
+
+    pageChange(page, pageSize){
+        let param = this.state.param;
+        param["pageNo"] = page;
+        param["pageSize"] = pageSize;
+        this.setState(state=>({
+            param:param
+        }));
+        this.searchGoodsList();
     }
 
     render(){
@@ -119,6 +138,26 @@ export default class ManageIndex extends Component{
             <Select.Option key={item.value} value={item.value}>{item.name}</Select.Option>
         );
         items.push(<Select.Option key={0} value={0}>全部</Select.Option>);
+        const goods = this.state.goods;
+        let tbody;
+        if(goods.length<=0){
+            tbody= (
+                <tr>
+                    <td colSpan="6" className="no-data">没有数据</td>
+                </tr>
+            )
+        }else{
+            tbody = goods.map((item,index)=>
+                <tr key={item.productNo}>
+                    <td>{index+1}</td>
+                    <td>{item.productNo}</td>
+                    <td>{item.productName}</td>
+                    <td>{item.categoryName}</td>
+                    <td>{item.direction}</td>
+                    <td><a onClick={()=>this.goodsDetail(item.productNo)} href="#">详情</a></td>
+                </tr>
+            );
+        }
         return(
             <div className="manage-box">
                 <div className="header">
@@ -164,18 +203,26 @@ export default class ManageIndex extends Component{
                             </tr>
                         </thead>
                         <tbody className="tbody">
-                            <RenderTBody goods={this.state.goods}></RenderTBody>
+                            {tbody}
                         </tbody>
 
                     </table>
                 </div>
 
                 <div className="page-box-2">
-                    <Pagination defaultCurrent={this.state.param.pageNo} total={this.state.totalPage} />
+                    <Pagination defaultCurrent={1}
+                                defaultPageSize={this.state.param.pageSize}
+                                current={this.state.param.pageNo}
+                                total={this.state.totalCount}
+                                onChange={(page,pageSize)=>this.pageChange(page,pageSize)}
+                    />
                 </div>
 
-                <GoodsAdd showPop={this.state.showPop} saveHandler={()=>this.saveHandler()}
+                <GoodsAdd  showPop={this.state.showAddPop} saveHandler={()=>this.saveHandler()}
                           cancelHandler={()=>this.cancelHandler()}/>
+
+                <GoodsDetail showPop={this.state.showDetailPop} detail={this.state.detail}
+                          cancelHandler={()=>this.cancelDetailHandler()}/>
             </div>
         )
 
