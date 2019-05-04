@@ -76,8 +76,8 @@ export default class WebsiteList extends Component {
         const list = this.state.list;
         return(
             <div>
-                <Header></Header>
-                <Nav></Nav>
+                <Header/>
+                <Nav/>
                 <div className="content-box">
                     <div className="content">
                         <div className="content-header">
@@ -89,7 +89,7 @@ export default class WebsiteList extends Component {
                     <RenderPages></RenderPages>
 
                 </div>
-            <Footer></Footer>
+            <Footer/>
 
             </div>);
     }

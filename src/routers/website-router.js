@@ -14,7 +14,7 @@ const routers = [
         component:WebsiteIndex
     },
     {
-        path:'/detail',
+        path:'/detail/:id',
         exact:true,
         component:WebsiteDetail
     },

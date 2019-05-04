@@ -21,6 +21,10 @@
     border-right: 1px solid white;
 }
 
+.nav-box ul>li>a{
+    color: white!important;
+}
+
 .nav-box ul>li:last-child{
     border-right:none;
 }

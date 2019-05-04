@@ -5,11 +5,12 @@ import './index.css'
 import Header from '@components/header/header';
 import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
+import xhr from '@/service/xhr/index';
 
 function RenderGoods(props){
     const goods = props.goods;
     const items = goods.map((item)=>
-        <Link to={"/detail?productNo="+item.productNo} key={item.productNo}>
+        <Link to={'/detail/' + item.productNo} key={item.productNo}>
             <div className="goods">
                 <div className="img-box">
                     <img src={rootPath+"/"+item.productImage} className="goods-img" alt=""/>
@@ -32,48 +33,38 @@ export default class WebsiteIndex extends Component {
         super(props);
         this.state={
             jades:[
-                {
-                    productNo:"1",
-                    productName:"龟寿图紫砂壶",
-                    direction:"龟寿图紫砂壶",
-                    productImage:"1.png",
-                    updateDate:"2019-04-08 19:23:02"
-                }
+
             ],
             porcelains:[
-                {
-                    productNo:"1",
-                    productName:"龟寿图紫砂壶",
-                    direction:"龟寿图紫砂壶",
-                    productImage:"1.png",
-                    updateDate:"2019-04-08 19:23:02"
-                }
+
             ],
             pictures:[
-                {
-                    productNo:"1",
-                    productName:"龟寿图紫砂壶",
-                    direction:"龟寿图紫砂壶",
-                    productImage:"1.png",
-                    updateDate:"2019-04-08 19:23:02"
-                }
+
             ],
             others:[
-                {
-                    productNo:"1",
-                    productName:"龟寿图紫砂壶",
-                    direction:"龟寿图紫砂壶",
-                    productImage:"1.png",
-                    updateDate:"2019-04-08 19:23:02"
-                }
+
             ]
         }
     }
     componentDidMount() {
-
+        this.listHome();
     }
 
-
+    listHome(){
+        let param = {};
+        const that = this;
+        xhr.get('/api/listHome',param).then(function (data) {
+            console.log(data);
+            if(data.code=="1"){
+                that.setState(state=>({
+                    jades: data.data.jades,
+                    porcelains: data.data.porcelains,
+                    pictures: data.data.pictures,
+                    others: data.data.others
+                }));
+            }
+        });
+    }
 
     render() {
         const jades = this.state.jades;
@@ -91,7 +82,7 @@ export default class WebsiteIndex extends Component {
                 <div className="content">
                     <div className="content-header">
                         <span className="head-line"></span><label>磁器</label>
-                        <Link to="/list?category=1"><a href="#">更多磁器</a></Link>
+                        <Link to="/list?category=1">更多磁器</Link>
                     </div>
                     <RenderGoods goods={jades}></RenderGoods>
                 </div>
@@ -99,7 +90,7 @@ export default class WebsiteIndex extends Component {
                 <div className="content">
                     <div className="content-header">
                         <span className="head-line"></span><label>玉器</label>
-                        <a href="#">更多玉器</a>
+                        <Link to="/list?category=2">更多玉器</Link>
                     </div>
                     <RenderGoods goods={porcelains}></RenderGoods>
                 </div>
@@ -107,7 +98,7 @@ export default class WebsiteIndex extends Component {
                 <div className="content">
                     <div className="content-header">
                         <span className="head-line"></span><label>书画</label>
-                        <a href="#">更多书画</a>
+                        <Link to="/list?category=3">更多书画</Link>
                     </div>
                     <RenderGoods goods={pictures}></RenderGoods>
                 </div>
@@ -115,7 +106,7 @@ export default class WebsiteIndex extends Component {
                 <div className="content">
                     <div className="content-header">
                         <span className="head-line"></span><label>杂项</label>
-                        <a href="#">更多杂项</a>
+                        <Link to="/list?category=4">更多杂项</Link>
                     </div>
                     <RenderGoods goods={others}></RenderGoods>
                 </div>

@@ -3,13 +3,14 @@ import './detail.css'
 import Header from '@components/header/header';
 import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
+import xhr from '@/service/xhr/index';
 import {rootPath} from "@/service/xhr/config";
 
 function RenderDetail(props) {
     const goods = props.goods;
 
     const items = goods.productImages.map(item=>
-        <li className="img-hover">
+        <li className="img-hover" key={item.productNo}>
             <img alt="" src={rootPath+"/"+item} width="50" height="64" />
         </li>
     )
@@ -38,7 +39,7 @@ function RenderDetail(props) {
                     <div className="desc">{goods.direction}</div>
                 </div>
             </div>
-            <div className="clear"></div>
+            <div className="clear"/>
         </div>
     )
 }
@@ -49,27 +50,36 @@ export default class WebsiteDetail extends Component{
         super(props);
         this.state = {
             goods:{
-                productNo:"1",
-                productName:"短袖t恤男士多色2019夏季潮牌韩版纯棉打底衫大码印花圆领半袖男体恤休闲上衣",
-                direction:"短袖t恤男士多色2019夏季潮牌韩版纯棉打底衫大码印花圆领半袖男体恤休闲上衣",
-                productImage:"1.png",
-                productImages:["1.png","1.png"]
+
             }
         };
     }
 
     componentDidMount() {
+        this.detail();
+    }
 
+    detail(){
+        let param = {};
+        param["productNo"] = this.props.match.params.id;
+        const that = this;
+        xhr.get('/api/detail',param).then(function (data) {
+            if(data.code=="1"){
+                that.setState(state=>({
+                    goods:data.data
+                }))
+            }
+        });
     }
 
     render() {
         const goods = this.state.goods;
         return(
             <div>
-                <Header></Header>
-                <Nav></Nav>
+                <Header/>
+                <Nav/>
                 <RenderDetail goods={goods}></RenderDetail>
-                <Footer></Footer>
+                <Footer/>
             </div>
         );
     }
