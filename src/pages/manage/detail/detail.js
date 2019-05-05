@@ -3,7 +3,7 @@ import xhr from '@/service/xhr/index';
 import {categories} from '@/constant/index';
 import './detail.css';
 import {Input, Modal, Select, Upload, Button, Icon} from 'antd';
-import {rootPath} from "@/service/xhr/config";
+import {imgPath} from "@/service/xhr/config";
 
 export default class AddGoods extends Component{
     constructor(props){
@@ -26,13 +26,8 @@ export default class AddGoods extends Component{
         if(!this.props.showPop){
             return(<div/>);
         }
-        const { TextArea } = Input;
-        const {previewVisible, previewImage, fileList} = this.state;
-        const uploadButton = (
-            <div>
-                <Icon type="plus"/>
-                <div className="ant-upload-text">上传图片</div>
-            </div>
+        const images = this.props.detail.productImages.map((item,index)=>
+            <img alt="example" className="preview-img" key={index} src={imgPath+item}/>
         );
         return(
             <div className="add-box" >
@@ -78,10 +73,7 @@ export default class AddGoods extends Component{
                                 <label>图片：</label>
                             </div>
                             <div className="add-right input2">
-
-                                <Modal visible={this.state.previewVisible} footer={null} onCancel={()=>this.handleCancel()}>
-                                    <img alt="example" style={{width: '100%'}} src={this.props.detail.productImages}/>
-                                </Modal>
+                                {images}
                             </div>
 
                         </div>

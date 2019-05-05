@@ -162,6 +162,7 @@ export default class ManageIndex extends Component{
             <div className="manage-box">
                 <div className="header">
                     后台管理
+                    <div className="logout">退出</div>
                 </div>
                 <div className="search-box">
                     <div className="box">

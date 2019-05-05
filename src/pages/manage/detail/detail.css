@@ -121,3 +121,9 @@
     margin-top: 20px;
     padding-left: 20px;
 }
+
+.preview-img {
+    width: 150px;
+    height: 150px;
+    margin: 10px;
+}

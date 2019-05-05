@@ -120,3 +120,10 @@
 .tbody tr{
     height: 40px;
 }
+
+.logout{
+    display: inline-block;
+    float: right;
+    color: blue;
+    cursor: pointer;
+}
