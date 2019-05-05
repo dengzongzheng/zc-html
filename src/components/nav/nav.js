@@ -14,10 +14,10 @@ export default class Nav extends Component{
         return (
             <div className="nav-box">
                 <ul>
-                    <li><Link to="/list/1">磁器</Link></li>
-                    <li><Link to="/list/2">玉器</Link></li>
-                    <li><Link to="/list/3">书画</Link></li>
-                    <li><Link to="/list/4">杂项</Link></li>
+                    <li><Link to={{pathname:"/list",query: {category:1}}}>磁器</Link></li>
+                    <li><Link to={{pathname:"/list",query: {category:2}}}>玉器</Link></li>
+                    <li><Link to={{pathname:"/list",query: {category:3}}}>书画</Link></li>
+                    <li><Link to={{pathname:"/list",query: {category:4}}}>杂项</Link></li>
                     <li><Link to="/">联系我们</Link></li>
                 </ul>
             </div>

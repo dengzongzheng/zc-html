@@ -14,12 +14,12 @@ const routers = [
         component:WebsiteIndex
     },
     {
-        path:'/detail/:id',
+        path:'/detail',
         exact:false,
         component:WebsiteDetail
     },
     {
-        path:'/list/:code',
+        path:'/list',
         exact:true,
         component:WebsiteList
     },

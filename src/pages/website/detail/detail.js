@@ -4,23 +4,23 @@ import Header from '@components/header/header';
 import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
 import xhr from '@/service/xhr/index';
-import {rootPath} from "@/service/xhr/config";
+import {imgPath} from "@/service/xhr/config";
 
 function RenderDetail(props) {
     const goods = props.goods;
     if(!goods.productImages){
         return(<div/>);
     }
-    const items = goods.productImages.map(item=>
-        <li className="img-hover" key={item}>
-            <img alt="" src={rootPath+"/"+item} width="50" height="64" />
+    const items = goods.productImages.map((item,index)=>
+        <li className="img-hover" key={index}>
+            <img alt="" src={imgPath+item} width="50" height="64" />
         </li>
     )
 
     return(
         <div className="detail-content-box">
             <div className="left-box">
-                <img src={rootPath+"/"+goods.productImage} className="detail-goods-img"/>
+                <img src={imgPath+goods.productImages[0]} className="detail-goods-img"/>
                 <div className="spec-list" clstag="shangpin|keycount|product|lunbotu_2">
                     <a id="spec-forward" href="javascript:;" className="arrow-prev disabled">
                         <i className="sprite-arrow-prev"></i>
@@ -63,7 +63,7 @@ export default class WebsiteDetail extends Component{
 
     detail(){
         let param = {};
-        param["productNo"] = this.props.match.params.id;
+        param["productNo"] = this.props.location.query.productNo;
         const that = this;
         xhr.get('/api/detail',param).then(function (data) {
             if(data.code=="1"){

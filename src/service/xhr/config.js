@@ -1,2 +1,3 @@
-export const rootPath = process.env.NODE_ENV == "production" ? 'http://health.baozhunniu.com' : "http://localhost:9080";
+export const rootPath = 'http://api.zhencangys.com';
 
+export const imgPath = 'http://img.zhencangys.com/';

@@ -4,7 +4,7 @@ import Header from '@components/header/header';
 import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
 import {Link} from "react-router-dom";
-import {rootPath} from "@/service/xhr/config";
+import {imgPath} from "@/service/xhr/config";
 import {Pagination} from 'antd';
 import xhr from '@/service/xhr/index';
 
@@ -14,7 +14,7 @@ function RenderGoods(props){
         <Link to={"/detail/"+item.productNo} key={item.productNo}>
             <div className="goods">
                 <div className="img-box">
-                    <img src={rootPath+"/"+item.productImage} className="goods-img" alt=""/>
+                    <img src={imgPath+item.productImages[0]} className="goods-img" alt=""/>
                 </div>
                 <div className="title">{item.productName}</div>
                 <div className="sub-title">{item.direction}</div>
@@ -42,12 +42,12 @@ export default class WebsiteList extends Component {
             pageNo:1,
             pageSize:10,
             totalCount:0,
-            categoryCode: this.props.match.params.code
+            categoryCode: 1
         }
-        this.listCategory();
+
     }
     componentDidMount() {
-
+        this.listCategory();
     }
 
     pageChange(page, pageSize){
@@ -64,7 +64,16 @@ export default class WebsiteList extends Component {
         let param = {};
         param["pageNo"] = this.state.pageNo;
         param["pageSize"] = this.state.pageSize;
-        param["categoryCode"] = this.state.categoryCode;
+        let category = 1;
+        try {
+            if (!this.props.location.query.category) {
+                category = this.props.location.query.category;
+            }
+        }catch (e) {
+
+        }
+
+        param["categoryCode"] = category;
         const that = this;
         xhr.get('/api/listCategory',param).then(function (data) {
             console.log(data);
@@ -92,10 +101,11 @@ export default class WebsiteList extends Component {
                         <RenderGoods goods={list}></RenderGoods>
                     </div>
                     <div className="list-page-box">
-                    <Pagination defaultCurrent={1}
+                    <Pagination defaultCurrent={this.pageNo+1}
                                 defaultPageSize={this.pageSize}
-                                current={this.pageNo}
+                                current={this.pageNo+1}
                                 total={this.totalCount}
+                                hideOnSinglePage={true}
                                 onChange={(page,pageSize)=>this.pageChange(page,pageSize)}/>
                     </div>
                 </div>
