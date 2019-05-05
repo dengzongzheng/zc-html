@@ -75,45 +75,45 @@ export default class WebsiteIndex extends Component {
         return(
             <div>
 
-            <Header></Header>
-            <Nav></Nav>
+            <Header/>
+            <Nav/>
             <div className="content-box">
 
                 <div className="content">
                     <div className="content-header">
-                        <span className="head-line"></span><label>磁器</label>
-                        <Link to="/list?category=1">更多磁器</Link>
+                        <span className="head-line"/><label>磁器</label>
+                        <Link to="/list/1">更多磁器</Link>
                     </div>
-                    <RenderGoods goods={jades}></RenderGoods>
+                    <RenderGoods goods={jades}/>
                 </div>
 
                 <div className="content">
                     <div className="content-header">
-                        <span className="head-line"></span><label>玉器</label>
-                        <Link to="/list?category=2">更多玉器</Link>
+                        <span className="head-line"/><label>玉器</label>
+                        <Link to="/list/2">更多玉器</Link>
                     </div>
-                    <RenderGoods goods={porcelains}></RenderGoods>
+                    <RenderGoods goods={porcelains}/>
                 </div>
 
                 <div className="content">
                     <div className="content-header">
-                        <span className="head-line"></span><label>书画</label>
-                        <Link to="/list?category=3">更多书画</Link>
+                        <span className="head-line"/><label>书画</label>
+                        <Link to="/list/3">更多书画</Link>
                     </div>
-                    <RenderGoods goods={pictures}></RenderGoods>
+                    <RenderGoods goods={pictures}/>
                 </div>
 
                 <div className="content">
                     <div className="content-header">
-                        <span className="head-line"></span><label>杂项</label>
-                        <Link to="/list?category=4">更多杂项</Link>
+                        <span className="head-line"/><label>杂项</label>
+                        <Link to="/list/4">更多杂项</Link>
                     </div>
-                    <RenderGoods goods={others}></RenderGoods>
+                    <RenderGoods goods={others}/>
                 </div>
 
             </div>
 
-            <Footer></Footer>
+            <Footer/>
         </div>);
     }
 }

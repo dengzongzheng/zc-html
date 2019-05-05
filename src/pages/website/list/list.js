@@ -6,11 +6,12 @@ import Footer from '@components/footer/footer';
 import {Link} from "react-router-dom";
 import {rootPath} from "@/service/xhr/config";
 import {Pagination} from 'antd';
+import xhr from '@/service/xhr/index';
 
 function RenderGoods(props){
     const goods = props.goods;
     const items = goods.map((item)=>
-        <Link to={"/detail?productNo="+item.productNo} key={item.productNo}>
+        <Link to={"/detail/"+item.productNo} key={item.productNo}>
             <div className="goods">
                 <div className="img-box">
                     <img src={rootPath+"/"+item.productImage} className="goods-img" alt=""/>
@@ -35,22 +36,18 @@ export default class WebsiteList extends Component {
         super(props);
         this.state = {
             list:[
-                {
-                    productNo:"1",
-                    productName:"龟寿图紫砂壶",
-                    direction:"龟寿图紫砂壶",
-                    productImage:"1.png",
-                    updateDate:"2019-04-08 19:23:02"
-                }
+
             ],
             totalPages:1,
             pageNo:1,
             pageSize:10,
-            totalCount:0
+            totalCount:0,
+            categoryCode: this.props.match.params.code
         }
+        this.listCategory();
     }
     componentDidMount() {
-        console.log('----componentDidMount-----');
+
     }
 
     pageChange(page, pageSize){
@@ -60,7 +57,25 @@ export default class WebsiteList extends Component {
         this.setState(state=>({
             param:param
         }));
-        // this.searchGoodsList();
+        this.listCategory();
+    }
+
+    listCategory(){
+        let param = {};
+        param["pageNo"] = this.state.pageNo;
+        param["pageSize"] = this.state.pageSize;
+        param["categoryCode"] = this.state.categoryCode;
+        const that = this;
+        xhr.get('/api/listCategory',param).then(function (data) {
+            console.log(data);
+            if(data.code=="1"){
+                that.setState(state=>({
+                    list: data.data.data,
+                    totalCount: data.data.totalCount,
+                    totalPages: data.data.totalPages
+                }));
+            }
+        });
     }
 
     render() {
@@ -84,7 +99,7 @@ export default class WebsiteList extends Component {
                                 onChange={(page,pageSize)=>this.pageChange(page,pageSize)}/>
                     </div>
                 </div>
-            <Footer/>
+                <Footer/>
 
             </div>);
     }

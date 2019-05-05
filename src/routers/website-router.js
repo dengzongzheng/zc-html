@@ -15,11 +15,11 @@ const routers = [
     },
     {
         path:'/detail/:id',
-        exact:true,
+        exact:false,
         component:WebsiteDetail
     },
     {
-        path:'/list',
+        path:'/list/:code',
         exact:true,
         component:WebsiteList
     },
