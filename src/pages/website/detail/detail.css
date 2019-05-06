@@ -23,6 +23,7 @@
 .lh li{
     margin: 0 2px;
     display: inline-block;
+    cursor: pointer;
 }
 
 .arrow-prev{

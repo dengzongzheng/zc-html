@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import {Link } from "react-router-dom";
+import {Redirect,Link} from 'react-router-dom';
 import './nav.css';
 
 export default class Nav extends Component{
@@ -10,6 +10,16 @@ export default class Nav extends Component{
 
         }
     }
+
+    toOtherCategory(categoryCode){
+        console.log(categoryCode);
+        if (this.props.switchCategory) {
+            this.props.switchCategory();
+        }else{
+            this.props.history.push("/list",{})
+        }
+    }
+
     render(){
         return (
             <div className="nav-box">

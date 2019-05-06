@@ -30,21 +30,19 @@ export default class App extends Component {
         return (
                 <div className="App">
 
-                    <BrowserRouter>
-                        <Switch>
-                            <Route path="/manage" component={props => requireAuth(ManageIndex, props)} />
-                            {
-                                routers.map((route,index) => {
-                                    return(
-                                        <Route
-                                            key={index}
-                                            path={route.path}
-                                            exact={route.exact}
-                                            component={route.component}/>
-                                    )
-                                })
-                            }
-                        </Switch>
+                    <BrowserRouter history={hashHistory}>
+                        <Route path="/manage" component={props => requireAuth(ManageIndex, props)} />
+                        {
+                            routers.map((route,index) => {
+                                return(
+                                    <Route
+                                        key={index}
+                                        path={route.path}
+                                        exact={route.exact}
+                                        component={route.component}/>
+                                )
+                            })
+                        }
 
                     </BrowserRouter>
                 </div>

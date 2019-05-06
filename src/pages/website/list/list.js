@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import './list.css';
 import Header from '@components/header/header';
-import Nav from '@components/nav/nav';
+import Nav from '@components/nav/nav2';
 import Footer from '@components/footer/footer';
 import {Link} from "react-router-dom";
 import {imgPath} from "@/service/xhr/config";
@@ -49,6 +49,22 @@ export default class WebsiteList extends Component {
 
     }
     componentDidMount() {
+        let categoryCode = 1;
+        try {
+            categoryCode = this.props.location.state.category;
+        }catch (e) {
+
+        }
+        this.setState(state=>({
+            categoryCode:categoryCode
+        }));
+        this.listCategory();
+    }
+
+    switchCategory(categoryCode){
+        this.setState(state=>({
+            categoryCode:categoryCode
+        }));
         this.listCategory();
     }
 
@@ -63,29 +79,10 @@ export default class WebsiteList extends Component {
     }
 
     listCategory(){
-        let category = 1;
-        try {
-            category = this.props.location.state.category;
-        }catch (e) {
-
-        }
-        let categoryName = ""
-        // for(let i=0;i<categories.length;i++){
-        //     if(categories[i].value===category){
-        //         categoryName = categories[i].name;
-        //         return;
-        //     }
-        // }
-        for(let index in categories){
-            console.log(index);
-            if(categories[index].value===category){
-                categoryName = categories[index].name;
-            }
-        }
         let param = {};
         param["pageNo"] = this.state.pageNo;
         param["pageSize"] = this.state.pageSize;
-        param["categoryCode"] = category;
+        param["categoryCode"] = this.state.categoryCode;
         const that = this;
         xhr.get('/api/listCategory',param).then(function (data) {
             console.log(data);
@@ -93,8 +90,7 @@ export default class WebsiteList extends Component {
                 that.setState(state=>({
                     list: data.data.data,
                     totalCount: data.data.totalCount,
-                    totalPages: data.data.totalPages,
-                    categoryCode:category
+                    totalPages: data.data.totalPages
                 }));
             }
         });
@@ -113,7 +109,7 @@ export default class WebsiteList extends Component {
         return(
             <div>
                 <Header/>
-                <Nav/>
+                <Nav switchCategory={(value)=>this.switchCategory(value)}/>
                 <div className="content-box">
                     <div className="content">
                         <div className="content-header">
