@@ -15,8 +15,7 @@ export default (state, action) => {
     switch (action.type) {
         case SET_ACCESS_TOKEN:
             return ({
-                count:state.count+action.value,
-                accessToken:"dzz"+state.count
+                accessToken:action.value
             });
             // return state ;
         case GET_ACCESS_TOKEN:

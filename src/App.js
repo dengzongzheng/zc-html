@@ -14,24 +14,41 @@ import ManageIndex from '@pages/manage/index/index';
 import '@/assets/css/common.css';
 import "antd/dist/antd.css";
 import routers from '@/routers/index';
+import * as Action from "@/store/token-action";
+import { connect } from "react-redux";
 
 
-function requireAuth(Layout, props) {
-    let flag = false;
-    if (flag) { // 未登录
-        return <Redirect to="/login" />;
-    } else {
-        return <Layout {...props} />
+// function requireAuth(Layout, props) {
+//     let flag = false;
+//     console.log(props.data.accessToken);
+//     if (flag) { // 未登录
+//         return <Redirect to="/login" />;
+//     } else {
+//         return <Layout {...props} />
+//     }
+// }
+
+class App extends Component {
+
+    constructor(props){
+        super(props);
     }
-}
 
-export default class App extends Component {
+    requireAuth(Layout, props) {
+        let flag = ""===this.props.data.accessToken;
+        if (flag) { // 未登录
+            return <Redirect to="/login" />;
+        } else {
+            return <Layout {...props} />
+        }
+    }
+
     render() {
         return (
                 <div className="App">
 
                     <BrowserRouter history={hashHistory}>
-                        <Route path="/manage" component={props => requireAuth(ManageIndex, props)} />
+                        <Route path="/manage" component={props => this.requireAuth(ManageIndex, props)} />
                         {
                             routers.map((route,index) => {
                                 return(
@@ -49,3 +66,9 @@ export default class App extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    data: state
+});
+
+export default connect(mapStateToProps,Action)(App);

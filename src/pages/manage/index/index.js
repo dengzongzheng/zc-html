@@ -8,6 +8,7 @@ import GoodsDetail from '@pages/manage/detail/detail';
 import { Button, Pagination, message,Input,Select } from 'antd';
 import xhr from '@/service/xhr/index';
 const Search = Input.Search;
+import * as Action from "@/store/token-action";
 
 
 export default class ManageIndex extends Component{
@@ -131,6 +132,10 @@ export default class ManageIndex extends Component{
         this.searchGoodsList();
     }
 
+    logout(){
+        this.props.history.push('/login');
+    }
+
     render(){
         const categories = this.state.categories;
         const defaultValue = this.state.param.categoryCode;
@@ -162,7 +167,7 @@ export default class ManageIndex extends Component{
             <div className="manage-box">
                 <div className="header">
                     后台管理
-                    <div className="logout">退出</div>
+                    <div className="logout" onClick={()=>this.logout()}>退出</div>
                 </div>
                 <div className="search-box">
                     <div className="box">
