@@ -10,7 +10,7 @@ import xhr from '@/service/xhr/index';
 function RenderGoods(props){
     const goods = props.goods;
     const items = goods.map((item)=>
-        <Link to={{pathname:'/detail',query:{productNo:item.productNo}}} key={item.productNo}>
+        <Link to={{pathname:'/detail',state:{productNo:item.productNo}}} key={item.productNo}>
             <div className="goods">
                 <div className="img-box">
                     <img src={imgPath+item.productImages[0]} className="goods-img" alt=""/>
@@ -82,7 +82,7 @@ export default class WebsiteIndex extends Component {
                 <div className="content">
                     <div className="content-header">
                         <span className="head-line"/><label>磁器</label>
-                        <Link to={{pathname:"/list",query: {category:1}}}>更多磁器</Link>
+                        <Link to={{pathname:"/list",state: {category:1}}}>更多磁器</Link>
                     </div>
                     <RenderGoods goods={jades}/>
                 </div>
@@ -90,7 +90,7 @@ export default class WebsiteIndex extends Component {
                 <div className="content">
                     <div className="content-header">
                         <span className="head-line"/><label>玉器</label>
-                        <Link to={{pathname:"/list",query: {category:2}}}>更多玉器</Link>
+                        <Link to={{pathname:"/list",state: {category:2}}}>更多玉器</Link>
                     </div>
                     <RenderGoods goods={porcelains}/>
                 </div>
@@ -98,7 +98,7 @@ export default class WebsiteIndex extends Component {
                 <div className="content">
                     <div className="content-header">
                         <span className="head-line"/><label>书画</label>
-                        <Link to={{pathname:"/list",query: {category:3}}}>更多书画</Link>
+                        <Link to={{pathname:"/list",state: {category:3}}}>更多书画</Link>
                     </div>
                     <RenderGoods goods={pictures}/>
                 </div>
@@ -106,7 +106,7 @@ export default class WebsiteIndex extends Component {
                 <div className="content">
                     <div className="content-header">
                         <span className="head-line"/><label>杂项</label>
-                        <Link to={{pathname:"/list",query: {category:4}}}>更多杂项</Link>
+                        <Link to={{pathname:"/list",state: {category:4}}}>更多杂项</Link>
                     </div>
                     <RenderGoods goods={others}/>
                 </div>

@@ -15,7 +15,7 @@ const routers = [
     },
     {
         path:'/detail',
-        exact:false,
+        exact:true,
         component:WebsiteDetail
     },
     {

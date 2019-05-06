@@ -6,9 +6,7 @@ export default class Header extends Component{
     render() {
         return(
             <Link to="/">
-                <div className="header-box">
-                    <img src={require("@/assets/images/header.png")}  className="header-img"  alt=""/>
-                </div>
+                <div className="header-box"/>
             </Link>
         );
     }

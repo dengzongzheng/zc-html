@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    BrowserRouter as Router,
+    BrowserRouter,
     Route,
     Link,
     Switch,
@@ -28,25 +28,26 @@ function requireAuth(Layout, props) {
 export default class App extends Component {
     render() {
         return (
-            <div className="App">
-                <HashRouter history={hashHistory}/>
-                <Router>
-                    <Switch>
-                        <Route path="/manage" component={props => requireAuth(ManageIndex, props)} />
-                        {
-                            routers.map((route,index) => {
-                                return(
-                                    <Route
-                                        key={index}
-                                        path={route.path}
-                                        exact={route.exact}
-                                        component={route.component}/>
-                                )
-                            })
-                        }
-                    </Switch>
-                </Router>
-            </div>
+                <div className="App">
+
+                    <BrowserRouter>
+                        <Switch>
+                            <Route path="/manage" component={props => requireAuth(ManageIndex, props)} />
+                            {
+                                routers.map((route,index) => {
+                                    return(
+                                        <Route
+                                            key={index}
+                                            path={route.path}
+                                            exact={route.exact}
+                                            component={route.component}/>
+                                    )
+                                })
+                            }
+                        </Switch>
+
+                    </BrowserRouter>
+                </div>
         );
     }
 }

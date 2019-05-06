@@ -63,7 +63,7 @@ export default class WebsiteDetail extends Component{
 
     detail(){
         let param = {};
-        param["productNo"] = this.props.location.query.productNo;
+        param["productNo"] = this.props.location.state.productNo;
         const that = this;
         xhr.get('/api/detail',param).then(function (data) {
             if(data.code=="1"){

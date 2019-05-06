@@ -7,11 +7,12 @@ import {Link} from "react-router-dom";
 import {imgPath} from "@/service/xhr/config";
 import {Pagination} from 'antd';
 import xhr from '@/service/xhr/index';
+import {categories} from '@/constant/index'
 
 function RenderGoods(props){
     const goods = props.goods;
     const items = goods.map((item)=>
-        <Link to={"/detail/"+item.productNo} key={item.productNo}>
+        <Link to={{pathname:"/detail",state:{productNo:item.productNo}}} key={item.productNo}>
             <div className="goods">
                 <div className="img-box">
                     <img src={imgPath+item.productImages[0]} className="goods-img" alt=""/>
@@ -42,7 +43,8 @@ export default class WebsiteList extends Component {
             pageNo:1,
             pageSize:10,
             totalCount:0,
-            categoryCode: 1
+            categoryCode: 1,
+            categoryName:""
         }
 
     }
@@ -61,18 +63,28 @@ export default class WebsiteList extends Component {
     }
 
     listCategory(){
-        let param = {};
-        param["pageNo"] = this.state.pageNo;
-        param["pageSize"] = this.state.pageSize;
         let category = 1;
         try {
-            if (!this.props.location.query.category) {
-                category = this.props.location.query.category;
-            }
+            category = this.props.location.state.category;
         }catch (e) {
 
         }
-
+        let categoryName = ""
+        // for(let i=0;i<categories.length;i++){
+        //     if(categories[i].value===category){
+        //         categoryName = categories[i].name;
+        //         return;
+        //     }
+        // }
+        for(let index in categories){
+            console.log(index);
+            if(categories[index].value===category){
+                categoryName = categories[index].name;
+            }
+        }
+        let param = {};
+        param["pageNo"] = this.state.pageNo;
+        param["pageSize"] = this.state.pageSize;
         param["categoryCode"] = category;
         const that = this;
         xhr.get('/api/listCategory',param).then(function (data) {
@@ -81,7 +93,8 @@ export default class WebsiteList extends Component {
                 that.setState(state=>({
                     list: data.data.data,
                     totalCount: data.data.totalCount,
-                    totalPages: data.data.totalPages
+                    totalPages: data.data.totalPages,
+                    categoryCode:category
                 }));
             }
         });
@@ -89,6 +102,14 @@ export default class WebsiteList extends Component {
 
     render() {
         const list = this.state.list;
+        let categoryName = "";
+        const categoryCode = this.state.categoryCode;
+        for(let index in categories){
+            if(categories[index].value==categoryCode){
+                categoryName = categories[index].name;
+                break;
+            }
+        }
         return(
             <div>
                 <Header/>
@@ -96,7 +117,7 @@ export default class WebsiteList extends Component {
                 <div className="content-box">
                     <div className="content">
                         <div className="content-header">
-                            <span className="head-line"/><label>磁器</label>
+                            <span className="head-line"/><label>{categoryName}</label>
                         </div>
                         <RenderGoods goods={list}></RenderGoods>
                     </div>

@@ -13,7 +13,7 @@ const categories =
             value:3
         },
         {
-            name:"其他",
+            name:"杂项",
             value:4
         }
     ];
