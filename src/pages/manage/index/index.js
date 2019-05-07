@@ -22,7 +22,7 @@ export default class ManageIndex extends Component{
                productName:"",
                categoryCode: 0,
                pageNo:1,
-               pageSize:2
+               pageSize:10
             },
             totalPage:0,
             totalCount:0,
@@ -49,9 +49,6 @@ export default class ManageIndex extends Component{
         });
     }
 
-    RenderTBody(props) {
-
-    }
 
     toAddGoods(){
         this.setState(state=>({
@@ -92,6 +89,7 @@ export default class ManageIndex extends Component{
         this.setState(state=>({
             showAddPop: false
         }));
+        this.searchGoodsList();
     }
 
     cancelHandler (props){

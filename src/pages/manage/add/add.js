@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import xhr from '@/service/xhr/index';
 import {categories} from '@/constant/index';
 import './add.css';
-import {Input, Modal, Select, Upload, Button, Icon} from 'antd';
+import {Input, Modal, Select, Upload, Button, Icon,message} from 'antd';
 import {rootPath} from "@/service/xhr/config";
 
 export default class AddGoods extends Component{
@@ -41,8 +41,31 @@ export default class AddGoods extends Component{
     }
 
     saveGoods(){
-        let param = this.state.param;
         const that = this;
+        let param = this.state.param;
+        if (param.productName == "") {
+            message.error('请输入藏品名称');
+            return;
+        }
+        if (param.direction == "") {
+            message.error('请输入藏品描述');
+            return;
+        }
+        if (param.productImages.length < 1) {
+            message.error('请上传藏品图片');
+            return;
+        }
+        let categoryName = param.categoryName;
+        if(categoryName==""){
+            let categoryCode =  param.categoryCode;
+            for(let index in categories){
+                if(categories[index].value==categoryCode){
+                    categoryName = categories[index].name;
+                    break;
+                }
+            }
+            param["categoryName"] = categoryName;
+        }
         xhr.post('/manage/api/saveGoods',param).then(function (data) {
             that.props.saveHandler();
         });
@@ -102,6 +125,22 @@ export default class AddGoods extends Component{
         console.log(e.event);
     }
 
+    removeHandler(e){
+        console.log(e)
+        const imagName = e.name;
+        let param = this.state.param;
+        let productImages =  param.productImages;
+        for (let i = 0; i < productImages.length; i++) {
+            if (productImages[i] === imagName){
+                productImages.splice(i, 1);
+                break;
+            }
+        }
+        this.setState(state=>({
+            param:param
+        }));
+    }
+
     render(){
         if(!this.props.showPop){
             return(<div/>);
@@ -111,7 +150,7 @@ export default class AddGoods extends Component{
         const uploadButton = (
             <div>
                 <Icon type="plus"/>
-                <div className="ant-upload-text">上传图片</div>
+                <div className="ant-upload-text">上传藏品图片</div>
             </div>
         );
         const categories = this.state.categories;
@@ -145,7 +184,7 @@ export default class AddGoods extends Component{
                                 <label>标题：</label>
                             </div>
                             <div className="add-right">
-                                <Input placeholder="请输入标题" allowClear
+                                <Input placeholder="请输入藏品标题" allowClear
                                        onChange={(e)=>this.handleInputChange(e)}
                                        name={"productName"}/>
                             </div>
@@ -158,7 +197,7 @@ export default class AddGoods extends Component{
                                 <label>描述：</label>
                             </div>
                             <div className="add-right">
-                                <TextArea rows={4} placeholder="请输入描述"
+                                <TextArea rows={4} placeholder="请输入藏品描述"
                                           style={{width:400,'marginLeft':20,'marginTop':20}}
                                           name={"direction"}
                                           onChange={(e)=>this.handleInputChange(e)}/>
@@ -179,6 +218,7 @@ export default class AddGoods extends Component{
                                     name={"files"}
                                     data={(e)=>this.completeHandle(e)}
                                     onChange={(e)=>this.handleFileSaveChange(e)}
+                                    onRemove={(e)=>this.removeHandler(e)}
                                 >
                                     {this.state.fileList.length >= 10 ? null : uploadButton}
                                 </Upload>
