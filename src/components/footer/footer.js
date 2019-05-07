@@ -34,6 +34,16 @@ export default class extends Component {
 
             <hr className="hr" />
 
+            <div className="call-us">
+                <ul>
+                    <li>地址：湖北省武汉市武昌区徐东大街福星惠誉国际城</li>
+                    <li>电话：+86 15072311132</li>
+                </ul>
+
+            </div>
+
+            <hr className="hr" />
+
             <div className="footer-box">
                 COPYRIGHT © 2019-2020 ZHENCANGYS.COM CORPORATION. ALL RIGHTS RESERVED.
             </div>

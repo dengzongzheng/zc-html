@@ -80,6 +80,20 @@ ul, menu, dir {
     line-height: 30px;
     font-size: 13px;
     color: #666;
-    margin-bottom: 72px;
+    margin-bottom: 30px;
     margin-top: 30px;
+}
+
+.call-us{
+    background-image: url("../../assets/images/call-phone.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    color: #6e7a89;
+    margin: 20px auto;
+    width: 400px;
+    padding-left: 50px;
+}
+
+.call-us ul{
+    list-style: none;
 }
