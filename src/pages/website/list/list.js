@@ -46,26 +46,26 @@ export default class WebsiteList extends Component {
             categoryCode: 1,
             categoryName:""
         }
-
+        this.listCategory();
     }
     componentDidMount() {
-        let categoryCode = 1;
         try {
-            categoryCode = this.props.location.state.category;
+            const categoryCode = this.props.location.state.category;
+            this.setState(state=>({
+                categoryCode:categoryCode
+            }));
+            console.log("aaa=="+categoryCode);
         }catch (e) {
 
         }
-        this.setState(state=>({
-            categoryCode:categoryCode
-        }));
-        this.listCategory();
     }
 
     switchCategory(categoryCode){
-        this.setState(state=>({
-            categoryCode:categoryCode
-        }));
-        this.listCategory();
+        const that = this;
+        this.setState({categoryCode:categoryCode},()=>{
+            that.listCategory();
+        });
+
     }
 
     pageChange(page, pageSize){

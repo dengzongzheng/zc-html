@@ -18,6 +18,7 @@
 
 .lh{
     list-style: none;
+    height: 50px;
 }
 
 .lh li{
@@ -67,6 +68,7 @@
     margin: 0 auto;
     overflow: hidden;
     width: 290px;
+    height: 64px;
 }
 
 .detail-goods-img {
