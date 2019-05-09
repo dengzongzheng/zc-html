@@ -84,16 +84,37 @@ ul, menu, dir {
     margin-top: 30px;
 }
 
+.call-box{
+    margin: 0 132px;
+    text-align: center;
+}
+
 .call-us{
     background-image: url("../../assets/images/call-phone.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    color: #6e7a89;
+    padding-left: 50px;
+    display: inline-block;
+
+}
+
+.call-us ul{
+    list-style: none;
+}
+
+
+.location{
+    background-image: url("../../assets/images/location.png");
     background-repeat: no-repeat;
     background-size: contain;
     color: #6e7a89;
     margin: 20px auto;
     width: 400px;
     padding-left: 50px;
+    display: inline-block;
 }
 
-.call-us ul{
+.location ul{
     list-style: none;
 }

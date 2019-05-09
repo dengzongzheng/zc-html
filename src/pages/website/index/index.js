@@ -6,7 +6,7 @@ import Header from '@components/header/header';
 import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
 import xhr from '@/service/xhr/index';
-import { Carousel,BackTop } from 'antd';
+import { Carousel } from 'antd';
 
 
 function RenderGoods(props){
@@ -134,7 +134,7 @@ export default class WebsiteIndex extends Component {
             </div>
 
             <Footer/>
-            <BackTop />
+
         </div>);
     }
 }

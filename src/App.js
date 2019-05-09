@@ -16,6 +16,7 @@ import "antd/dist/antd.css";
 import routers from '@/routers/index';
 import * as Action from "@/store/token-action";
 import { connect } from "react-redux";
+import {BackTop } from 'antd';
 
 
 // function requireAuth(Layout, props) {
@@ -62,6 +63,7 @@ class App extends Component {
                         }
 
                     </BrowserRouter>
+                    <BackTop />
                 </div>
         );
     }
