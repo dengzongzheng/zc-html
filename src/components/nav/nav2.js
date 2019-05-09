@@ -12,6 +12,7 @@ export default class Nav extends Component{
         return (
             <div className="nav-box">
                 <ul>
+                    <li><Link to="/">首页</Link></li>
                     <li onClick={()=>this.props.switchCategory(1)}>磁器</li>
                     <li onClick={()=>this.props.switchCategory(2)}>玉器</li>
                     <li onClick={()=>this.props.switchCategory(3)}>书画</li>

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon ,Button} from 'antd';
 const { Header, Sider, Content } = Layout;
 // import {Link} from "react-router-dom";
 import Add from "@pages/manage/add/add"
@@ -14,9 +14,8 @@ import {
     HashRouter
 } from 'react-router-dom';
 
-import ManageIndex from '@pages/manage/index/index';
-import Upload from '@pages/manage/upload/upload';
-import './test.css'
+import './test.css';
+import axios from 'axios';
 
 export default class Test extends Component{
     constructor(props) {
@@ -31,33 +30,29 @@ export default class Test extends Component{
         }))
     }
 
+    validate(){
+        console.log("ddddd");
+        // 开始 loading
+        return axios.get("http://172.16.10.166:9001/userCenter/index", {
+            params: {},
+            withCredentials:true
+        }).then(response => {
+           console.log(response)
+           const data = response.data;
+           if(data.code=="3"){
+               location.href = data.data;
+           }
+        }).catch(error => {
+            // 异常处理
+            console.log(error);
+        })
+    }
+
     render() {
         return (
             <div>
-                <Layout>
-                    <Menu
-                        onClick={this.handleClick}
-                        selectedKeys={[this.state.current]}
-                        mode="horizontal"
-                    >
-                        <Menu.Item key="mail">
-                            <Link to="/"><span><Icon type="mail" /><span>index</span></span></Link>
-                        </Menu.Item>
-                        <Menu.SubMenu title={<span className="submenu-title-wrapper"><Icon type="setting" />Navigation Three - Submenu</span>}>
-                            <Menu.MenuItemGroup>
-                                <Menu.Item key="setting:1"><Link to="/upload"><span>index</span></Link></Menu.Item>
-                            </Menu.MenuItemGroup>
-                        </Menu.SubMenu>
-                    </Menu>
-
-                    <Layout>
-                        <Header/>
-                        <Content>
-
-                        </Content>
-                    </Layout>
-                </Layout>
-
+                <a href="http://sitwww.baozhunniu.com/index">去官网</a>
+                <Button type="primary" onClick={()=>this.validate()}>验证登录</Button>
             </div>
         );
     }

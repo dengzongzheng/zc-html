@@ -1,14 +1,17 @@
 import React,{Component} from 'react';
 import {Lifecycle, RouteContext} from 'react-router';
 import './index.css';
+import '../add/add.css'
 import {categories} from '@/constant/index';
 import {Link} from "react-router-dom";
-import GoodsAdd from '@pages/manage/add/add';
-import GoodsDetail from '@pages/manage/detail/detail';
-import { Button, Pagination, message,Input,Select } from 'antd';
+// import GoodsAdd from '@pages/manage/add/add';
+// import GoodsDetail from '@pages/manage/detail/detail';
+import {Button, Pagination, message, Input, Select, Popconfirm, Modal, Upload, Icon} from 'antd';
 import xhr from '@/service/xhr/index';
 const Search = Input.Search;
+const confirm = Modal.confirm;
 import * as Action from "@/store/token-action";
+import {rootPath} from "@/service/xhr/config";
 
 
 export default class ManageIndex extends Component{
@@ -29,7 +32,22 @@ export default class ManageIndex extends Component{
             showAddPop:false,
             showDetailPop:false,
             showEditPop:false,
-            detail:{}
+            detail:{},
+            visibleAddModal:false,
+            loading:false,
+            previewVisible: false,
+            previewImage: '',
+            fileList: [
+
+            ],
+            param2:{
+                categoryCode:1,
+                categoryName:"",
+                productName:"",
+                visitCount:"",
+                direction:"",
+                productImages:[]
+            }
         }
         this.searchGoodsList();
     }
@@ -52,7 +70,7 @@ export default class ManageIndex extends Component{
 
     toAddGoods(){
         this.setState(state=>({
-            showAddPop: true
+            visibleAddModal: true
         }));
 
     }
@@ -114,6 +132,38 @@ export default class ManageIndex extends Component{
         });
     }
 
+    delete(productNo){
+        if (!productNo) {
+            return;
+        }
+        let param = {};
+        param["productNo"] = productNo;
+        param = JSON.stringify(param);
+        const that = this;
+        xhr.post('/manage/api/delete?productNo='+productNo,param).then(function (data) {
+            console.log(data);
+            if (data.code === "1" && data.data) {
+                message.success("删除成功");
+                that.searchGoodsList();
+            }else{
+                message.warning("删除失败");
+            }
+        });
+    }
+
+    showDeleteConfirm(productNo) {
+        const that = this;
+        confirm({
+            title: '确定要删除该条数据?',
+            content: '删除数据后将不在官网展示，数据清空。',
+            cancelText:"取消",
+            okText:"确认",
+            onOk() {
+                that.delete(productNo);
+            }
+        });
+    }
+
     cancelDetailHandler(props){
         this.setState(state=>({
             showDetailPop: false
@@ -132,6 +182,120 @@ export default class ManageIndex extends Component{
 
     logout(){
         this.props.history.push('/login');
+    }
+
+    saveGoods(){
+        const that = this;
+        let param = this.state.param2;
+        if (param.productName == "") {
+            message.error('请输入藏品名称');
+            return;
+        }
+        if (param.visitCount == "") {
+            message.error('请输入藏品阅览量');
+            return;
+        }
+        if (param.direction == "") {
+            message.error('请输入藏品描述');
+            return;
+        }
+        if (param.productImages.length < 1) {
+            message.error('请上传藏品图片');
+            return;
+        }
+        this.setState({ loading: true });
+        let categoryName = param.categoryName;
+        if(categoryName==""){
+            let categoryCode =  param.categoryCode;
+            for(let index in categories){
+                if(categories[index].value==categoryCode){
+                    categoryName = categories[index].name;
+                    break;
+                }
+            }
+            param["categoryName"] = categoryName;
+        }
+        xhr.post('/manage/api/saveGoods',param).then(function (data) {
+            that.setState({ loading: false,visibleAddModal: false });
+            that.searchGoodsList();
+        });
+    }
+
+    handleInputChange(event){
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        let param = this.state.param2;
+        param[name] = value;
+        this.setState({
+            param2: param
+        });
+    }
+
+    handlePreview(file) {
+        this.setState(state => ({
+            previewImage: file.url || file.thumbUrl,
+            previewVisible: true,
+        }));
+    }
+
+    selectChange(event,option){
+        let param = this.state.param2;
+        console.log(option)
+        param["categoryCode"] = event;
+        param["categoryName"] = option.props.children;
+        this.setState({
+            param2: param
+        });
+    }
+
+
+    handleFileSaveChange(event) {
+
+        const response = event.file.response;
+        if(response && response.code=="1"){
+            let param = this.state.param2;
+            let productImages =  param.productImages;
+            productImages.push(response.data.fileName);
+            param.productImages = productImages;
+            this.setState(state=>({
+                param2:param
+            }));
+        }
+        this.setState(state=>({
+            fileList:event.fileList
+        }));
+
+    }
+
+    completeHandle(e){
+        console.log(e.event);
+    }
+
+    removeHandler(e){
+        console.log(e)
+        const imagName = e.name;
+        let param = this.state.param2;
+        let productImages =  param.productImages;
+        for (let i = 0; i < productImages.length; i++) {
+            if (productImages[i] === imagName){
+                productImages.splice(i, 1);
+                break;
+            }
+        }
+        this.setState(state=>({
+            param2:param
+        }));
+    }
+
+    handleOk(){
+        this.saveGoods();
+    }
+
+    handleAddCancel(){
+        this.setState(state=>({
+            visibleAddModal: false
+        }));
     }
 
     render(){
@@ -155,13 +319,24 @@ export default class ManageIndex extends Component{
                     <td>{index+1}</td>
                     <td>{item.productNo}</td>
                     <td>{item.productName}</td>
+                    <td>{item.visitCount}</td>
                     <td>{item.categoryName}</td>
                     <td>{item.direction}</td>
-                    <td><a onClick={()=>this.goodsDetail(item.productNo)} href="#">详情</a></td>
+                    <td><a onClick={()=>this.goodsDetail(item.productNo)} href="#">详情</a>&nbsp;&nbsp;
+                        <a onClick={()=>this.showDeleteConfirm(item.productNo)} href="#">删除</a></td>
                 </tr>
             );
         }
+        const { TextArea } = Input;
+        const {previewVisible, previewImage, fileList} = this.state;
+        const uploadButton = (
+            <div>
+                <Icon type="plus"/>
+                <div className="ant-upload-text">上传藏品图片</div>
+            </div>
+        );
         return(
+
             <div className="manage-box">
                 <div className="header">
                     后台管理
@@ -202,6 +377,7 @@ export default class ManageIndex extends Component{
                                 <th>序号</th>
                                 <th>编号</th>
                                 <th>标题</th>
+                                <th>阅览量</th>
                                 <th>类别</th>
                                 <th>描述</th>
                                 <th>操作</th>
@@ -223,11 +399,93 @@ export default class ManageIndex extends Component{
                     />
                 </div>
 
-                <GoodsAdd  showPop={this.state.showAddPop} saveHandler={()=>this.saveHandler()}
-                          cancelHandler={()=>this.cancelHandler()}/>
 
-                <GoodsDetail showPop={this.state.showDetailPop} detail={this.state.detail}
-                          cancelHandler={()=>this.cancelDetailHandler()}/>
+                <Modal
+                    visible={this.state.visibleAddModal}
+                    title="新增藏品"
+                    onOk={()=>this.handleOk}
+                    onCancel={()=>this.handleAddCancel}
+                    footer={[
+                        <Button key="back" onClick={()=>this.handleAddCancel()}>取消</Button>,
+                        <Button key="submit" type="primary" loading={this.state.loading} onClick={()=>this.handleOk()}>
+                            提交
+                        </Button>,
+                    ]}
+                >
+                    <div className="add-row">
+                        <div className="add-left">
+                            <label>类别：</label>
+                        </div>
+                        <div className="add-right">
+                            <Select defaultValue={defaultValue} type={"select"}
+                                    style={{ width: 400,'marginLeft':20 }}
+                                    name="categoryCode"
+                                    onChange={(e,option)=>this.selectChange(e,option)}>{items}</Select>
+                        </div>
+
+                    </div>
+                    <div className="add-row">
+                        <div className="add-left">
+                            <label>标题：</label>
+                        </div>
+                        <div className="add-right">
+                            <Input placeholder="请输入藏品标题" allowClear
+                                   onChange={(e)=>this.handleInputChange(e)}
+                                   name={"productName"}/>
+                        </div>
+
+                    </div>
+
+                    <div className="add-row">
+                        <div className="add-left">
+                            <label>阅览量：</label>
+                        </div>
+                        <div className="add-right">
+                            <Input placeholder="请输入阅览量" allowClear
+                                   onChange={(e)=>this.handleInputChange(e)}
+                                   name={"visitCount"}/>
+                        </div>
+
+                    </div>
+
+
+                    <div className="add-row-2">
+                        <div className="add-left">
+                            <label>描述：</label>
+                        </div>
+                        <div className="add-right">
+                                <TextArea rows={4} placeholder="请输入藏品描述"
+                                          style={{width:400,'marginLeft':20,'marginTop':20}}
+                                          name={"direction"}
+                                          onChange={(e)=>this.handleInputChange(e)}/>
+                        </div>
+
+                    </div>
+
+                    <div className="add-row-3">
+                        <div className="add-left">
+                            <label>图片：</label>
+                        </div>
+                        <div className="add-right input2">
+                            <Upload
+                                action={rootPath+"/file/upload"}
+                                listType="picture-card"
+                                fileList={this.state.fileList}
+                                onPreview={(e)=>this.handlePreview(e)}
+                                name={"files"}
+                                data={(e)=>this.completeHandle(e)}
+                                onChange={(e)=>this.handleFileSaveChange(e)}
+                                onRemove={(e)=>this.removeHandler(e)}
+                            >
+                                {this.state.fileList.length >= 10 ? null : uploadButton}
+                            </Upload>
+                            <Modal visible={this.state.previewVisible} footer={null} onCancel={()=>this.handleCancel()}>
+                                <img alt="example" style={{width: '100%'}} src={this.state.previewImage}/>
+                            </Modal>
+                        </div>
+
+                    </div>
+                </Modal>
             </div>
         )
 

@@ -24,6 +24,7 @@ export default class Nav extends Component{
         return (
             <div className="nav-box">
                 <ul>
+                    <li><Link to="/">首页</Link></li>
                     <li><Link to={{pathname:"/list",state: {category:1}}}>磁器</Link></li>
                     <li><Link to={{pathname:"/list",state: {category:2}}}>玉器</Link></li>
                     <li><Link to={{pathname:"/list",state: {category:3}}}>书画</Link></li>
