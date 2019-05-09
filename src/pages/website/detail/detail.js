@@ -76,6 +76,7 @@ export default class WebsiteDetail extends Component{
                     <div className="right-content">
                         <div className="detail-title">{goods.productName}</div>
                         <div className="desc">{goods.direction}</div>
+                        <div className="visit">阅览量：{goods.visitCount}</div>
                     </div>
                 </div>
                 <div className="clear"/>

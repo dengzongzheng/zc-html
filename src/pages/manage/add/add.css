@@ -50,14 +50,12 @@
 }
 
 .add-row-2{
-    border-bottom: 1px solid #e3e3e3;
     height: 120px;
     font-size: 12px;
     line-height: 120px;
 }
 
 .add-row-3{
-    border-bottom: 1px solid #e3e3e3;
     font-size: 12px;
 }
 
@@ -71,7 +69,6 @@
 .add-right{
     display: inline-block;
     line-height: 28px;
-    width: 75%;
 }
 
 .add-left{

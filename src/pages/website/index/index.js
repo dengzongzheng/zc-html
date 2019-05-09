@@ -6,6 +6,8 @@ import Header from '@components/header/header';
 import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
 import xhr from '@/service/xhr/index';
+import { Carousel,BackTop } from 'antd';
+
 
 function RenderGoods(props){
     const goods = props.goods;
@@ -43,6 +45,9 @@ export default class WebsiteIndex extends Component {
             ],
             others:[
 
+            ],
+            recommended:[
+
             ]
         }
     }
@@ -60,7 +65,8 @@ export default class WebsiteIndex extends Component {
                     jades: data.data.jades,
                     porcelains: data.data.porcelains,
                     pictures: data.data.pictures,
-                    others: data.data.others
+                    others: data.data.others,
+                    recommended:data.data.recommended
                 }));
             }
         });
@@ -71,13 +77,27 @@ export default class WebsiteIndex extends Component {
         const porcelains = this.state.porcelains;
         const pictures = this.state.pictures;
         const others = this.state.others;
-
+        const recommended = this.state.recommended;
         return(
             <div>
 
             <Header/>
             <Nav/>
+            <div className="content-box-swapper">
+                <Carousel effect="fade" autoplay={true} dots={true}>
+                    <div className="swapper-img2"><img src={imgPath+"swaper1.jpg"}/></div>
+                    <div className="swapper-img2"><img src={imgPath+"swaper2.jpg"}/></div>
+                </Carousel>
+            </div>
+
             <div className="content-box">
+
+                <div className="content">
+                    <div className="content-header">
+                        <span className="head-line"/><label>重点推荐</label>
+                    </div>
+                    <RenderGoods goods={recommended}/>
+                </div>
 
                 <div className="content">
                     <div className="content-header">
@@ -114,6 +134,7 @@ export default class WebsiteIndex extends Component {
             </div>
 
             <Footer/>
+            <BackTop />
         </div>);
     }
 }

@@ -128,3 +128,14 @@
     color: blue;
     cursor: pointer;
 }
+
+.preview-img {
+    width: 104px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.ant-input-number {
+    margin-left: 20px!important;
+    width: 400px!important;;
+}

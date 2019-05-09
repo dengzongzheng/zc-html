@@ -62,7 +62,7 @@
 }
 
 .goods-img{
-    max-width: 130px;
+    max-width: 198px;
     max-height: 130px;
     border-radius: 6px;
     margin-bottom: 10px;
@@ -80,8 +80,7 @@
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     white-space: nowrap;
-    padding-left: 52px;
-    text-align: left;
+    text-align: center;
 }
 
 .sub-title{
@@ -95,8 +94,7 @@
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     white-space: nowrap;
-    padding-left: 52px;
-    text-align: left;
+    text-align: center;
 }
 
 .goods-date{

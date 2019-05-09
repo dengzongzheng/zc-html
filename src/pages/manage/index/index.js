@@ -4,14 +4,20 @@ import './index.css';
 import '../add/add.css'
 import {categories} from '@/constant/index';
 import {Link} from "react-router-dom";
-// import GoodsAdd from '@pages/manage/add/add';
-// import GoodsDetail from '@pages/manage/detail/detail';
-import {Button, Pagination, message, Input, Select, Popconfirm, Modal, Upload, Icon} from 'antd';
+import {Button, Pagination, message, Input, Select, Popconfirm, Modal, Upload, Icon,InputNumber} from 'antd';
 import xhr from '@/service/xhr/index';
 const Search = Input.Search;
 const confirm = Modal.confirm;
 import * as Action from "@/store/token-action";
-import {rootPath} from "@/service/xhr/config";
+import {rootPath,imgPath} from "@/service/xhr/config";
+
+const { TextArea } = Input;
+const uploadButton = (
+    <div>
+        <Icon type="plus"/>
+        <div className="ant-upload-text">上传藏品图片</div>
+    </div>
+);
 
 
 export default class ManageIndex extends Component{
@@ -44,7 +50,7 @@ export default class ManageIndex extends Component{
                 categoryCode:1,
                 categoryName:"",
                 productName:"",
-                visitCount:"",
+                visitCount:1,
                 direction:"",
                 productImages:[]
             }
@@ -57,7 +63,7 @@ export default class ManageIndex extends Component{
         const that = this;
         xhr.get('/manage/api/listGoods',param).then(function (data) {
            console.log(data);
-           if(data.code=="1"){
+           if(data.code==="1"){
                that.setState(state=>({
                    goods:data.data.data,
                    totalPage:data.data.totalPage,
@@ -75,7 +81,8 @@ export default class ManageIndex extends Component{
 
     }
 
-    selectChange(event){
+
+    selectChange2(event){
         let param = this.state.param;
         param["categoryCode"] = event;
         this.setState({
@@ -187,15 +194,15 @@ export default class ManageIndex extends Component{
     saveGoods(){
         const that = this;
         let param = this.state.param2;
-        if (param.productName == "") {
-            message.error('请输入藏品名称');
+        if (param.productName === "") {
+            message.error('请输入藏品标题');
             return;
         }
-        if (param.visitCount == "") {
+        if (param.visitCount === "") {
             message.error('请输入藏品阅览量');
             return;
         }
-        if (param.direction == "") {
+        if (param.direction === "") {
             message.error('请输入藏品描述');
             return;
         }
@@ -205,10 +212,10 @@ export default class ManageIndex extends Component{
         }
         this.setState({ loading: true });
         let categoryName = param.categoryName;
-        if(categoryName==""){
+        if(categoryName===""){
             let categoryCode =  param.categoryCode;
             for(let index in categories){
-                if(categories[index].value==categoryCode){
+                if(categories[index].value===categoryCode){
                     categoryName = categories[index].name;
                     break;
                 }
@@ -239,6 +246,14 @@ export default class ManageIndex extends Component{
         }));
     }
 
+    detailPreview(url){
+        this.setState(state=>({
+            previewImage:imgPath+url,
+            previewVisible: true
+        }));
+    }
+
+
     selectChange(event,option){
         let param = this.state.param2;
         console.log(option)
@@ -253,7 +268,7 @@ export default class ManageIndex extends Component{
     handleFileSaveChange(event) {
 
         const response = event.file.response;
-        if(response && response.code=="1"){
+        if(response && response.code==="1"){
             let param = this.state.param2;
             let productImages =  param.productImages;
             productImages.push(response.data.fileName);
@@ -265,7 +280,15 @@ export default class ManageIndex extends Component{
         this.setState(state=>({
             fileList:event.fileList
         }));
+        console.log(this.state.param2);
+    }
 
+    visitCountChange(value){
+        let param = this.state.param2;
+        param["visitCount"] = value;
+        this.setState(state=>({
+            param2:param
+        }));
     }
 
     completeHandle(e){
@@ -299,12 +322,14 @@ export default class ManageIndex extends Component{
     }
 
     render(){
+        const {previewVisible, previewImage, fileList} = this.state;
         const categories = this.state.categories;
         const defaultValue = this.state.param.categoryCode;
+        const defaultValue2 = this.state.param2.categoryCode;
         let items = categories.map(item=>
             <Select.Option key={item.value} value={item.value}>{item.name}</Select.Option>
         );
-        items.push(<Select.Option key={0} value={0}>全部</Select.Option>);
+        let item2 = items.concat([<Select.Option key={0} value={0}>全部</Select.Option>]);
         const goods = this.state.goods;
         let tbody;
         if(goods.length<=0){
@@ -327,14 +352,14 @@ export default class ManageIndex extends Component{
                 </tr>
             );
         }
-        const { TextArea } = Input;
-        const {previewVisible, previewImage, fileList} = this.state;
-        const uploadButton = (
-            <div>
-                <Icon type="plus"/>
-                <div className="ant-upload-text">上传藏品图片</div>
-            </div>
-        );
+        let images;
+        if (this.state.detail.productImages) {
+            images = this.state.detail.productImages.map((item,index)=>
+                <img alt="example" className="preview-img" onClick={()=>this.detailPreview(item)}
+                     key={index} src={imgPath+item}/>
+            );
+        }
+
         return(
 
             <div className="manage-box">
@@ -358,7 +383,7 @@ export default class ManageIndex extends Component{
                         <Select defaultValue={defaultValue} type={"select"}
                                 style={{ width: 200}}
                                 name="categoryCode"
-                                onChange={(e)=>this.selectChange(e)}>{items}</Select>
+                                onChange={(e)=>this.selectChange2(e)}>{item2}</Select>
                     </div>
 
                     <div className="box">
@@ -403,13 +428,13 @@ export default class ManageIndex extends Component{
                 <Modal
                     visible={this.state.visibleAddModal}
                     title="新增藏品"
-                    onOk={()=>this.handleOk}
-                    onCancel={()=>this.handleAddCancel}
+                    onOk={()=>this.handleOk()}
+                    onCancel={()=>this.handleAddCancel()}
                     footer={[
                         <Button key="back" onClick={()=>this.handleAddCancel()}>取消</Button>,
                         <Button key="submit" type="primary" loading={this.state.loading} onClick={()=>this.handleOk()}>
                             提交
-                        </Button>,
+                        </Button>
                     ]}
                 >
                     <div className="add-row">
@@ -417,21 +442,22 @@ export default class ManageIndex extends Component{
                             <label>类别：</label>
                         </div>
                         <div className="add-right">
-                            <Select defaultValue={defaultValue} type={"select"}
+                            <Select defaultValue={defaultValue2} type={"select"}
                                     style={{ width: 400,'marginLeft':20 }}
                                     name="categoryCode"
                                     onChange={(e,option)=>this.selectChange(e,option)}>{items}</Select>
                         </div>
 
                     </div>
-                    <div className="add-row">
+                    <div className="add-row-2">
                         <div className="add-left">
                             <label>标题：</label>
                         </div>
                         <div className="add-right">
-                            <Input placeholder="请输入藏品标题" allowClear
-                                   onChange={(e)=>this.handleInputChange(e)}
-                                   name={"productName"}/>
+                            <TextArea rows={4} placeholder="请输入藏品标题"
+                                      style={{width:400,'marginLeft':20,'marginTop':20}}
+                                      name={"productName"}
+                                      onChange={(e)=>this.handleInputChange(e)}/>
                         </div>
 
                     </div>
@@ -441,9 +467,8 @@ export default class ManageIndex extends Component{
                             <label>阅览量：</label>
                         </div>
                         <div className="add-right">
-                            <Input placeholder="请输入阅览量" allowClear
-                                   onChange={(e)=>this.handleInputChange(e)}
-                                   name={"visitCount"}/>
+                            <InputNumber min={1} placeholder="请输入阅览量" name={"visitCount"} defaultValue={1}
+                                         onChange={(e)=>this.visitCountChange(e)} />
                         </div>
 
                     </div>
@@ -470,6 +495,7 @@ export default class ManageIndex extends Component{
                             <Upload
                                 action={rootPath+"/file/upload"}
                                 listType="picture-card"
+                                style={{width: '100%', height:104}}
                                 fileList={this.state.fileList}
                                 onPreview={(e)=>this.handlePreview(e)}
                                 name={"files"}
@@ -479,9 +505,70 @@ export default class ManageIndex extends Component{
                             >
                                 {this.state.fileList.length >= 10 ? null : uploadButton}
                             </Upload>
-                            <Modal visible={this.state.previewVisible} footer={null} onCancel={()=>this.handleCancel()}>
-                                <img alt="example" style={{width: '100%'}} src={this.state.previewImage}/>
-                            </Modal>
+                        </div>
+
+                    </div>
+                </Modal>
+
+                <Modal visible={this.state.previewVisible} footer={null}
+                       onCancel={()=>this.setState(state=>({previewVisible: false}))}>
+                    <img alt="example" style={{width: '100%', height:86}} src={this.state.previewImage}/>
+                </Modal>
+
+                <Modal
+                    visible={this.state.showDetailPop}
+                    title="藏品详情"
+                    onCancel={()=>this.setState(state=>({showDetailPop:false}))}
+                    footer={[
+                        <Button key="back" onClick={()=>this.setState(state=>({showDetailPop:false}))}>关闭</Button>,
+                    ]}
+                >
+                    <div className="add-row">
+                        <div className="add-left">
+                            <label>类别：</label>
+                        </div>
+                        <div className="add-right">
+                            {this.state.detail.categoryName}
+                        </div>
+
+                    </div>
+                    <div className="add-row-2">
+                        <div className="add-left">
+                            <label>标题：</label>
+                        </div>
+                        <div className="add-right">
+                            {this.state.detail.productName}
+                        </div>
+
+                    </div>
+
+                    <div className="add-row">
+                        <div className="add-left">
+                            <label>阅览量：</label>
+                        </div>
+                        <div className="add-right">
+                            {this.state.detail.visitCount}
+                        </div>
+
+                    </div>
+
+
+                    <div className="add-row-2">
+                        <div className="add-left">
+                            <label>描述：</label>
+                        </div>
+                        <div className="add-right">
+                            {this.state.detail.direction}
+                        </div>
+
+                    </div>
+
+                    <div className="add-row-3">
+                        <div className="add-left">
+                            <label>图片：</label>
+                        </div>
+                        <div className="add-right input2">
+                            {images}
                         </div>
 
                     </div>
