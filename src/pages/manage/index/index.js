@@ -4,7 +4,7 @@ import './index.css';
 import '../add/add.css'
 import {categories} from '@/constant/index';
 import {Link} from "react-router-dom";
-import {Button, Pagination, message, Input, Select, Popconfirm, Modal, Upload, Icon,InputNumber} from 'antd';
+import {Button, Pagination, message, Input,Spin, Select, Popconfirm, Modal, Upload, Icon,InputNumber} from 'antd';
 import xhr from '@/service/xhr/index';
 const Search = Input.Search;
 const confirm = Modal.confirm;
@@ -35,9 +35,15 @@ export default class ManageIndex extends Component{
             },
             totalPage:0,
             totalCount:0,
+            showSearchLoading:false,
             showAddPop:false,
             showDetailPop:false,
             showEditPop:false,
+            editProductNo:"",
+            editParam:{
+                visitCount: "",
+                productNo:""
+            },
             detail:{},
             visibleAddModal:false,
             loading:false,
@@ -47,22 +53,25 @@ export default class ManageIndex extends Component{
 
             ],
             param2:{
-                categoryCode:1,
+                categoryCode:0,
                 categoryName:"",
                 productName:"",
-                visitCount:1,
+                visitCount:"",
                 direction:"",
                 productImages:[]
             }
         }
+    }
+
+    componentWillMount(){
         this.searchGoodsList();
     }
 
     searchGoodsList(){
+        this.setState(state => ({showSearchLoading: true}));
         const param = this.state.param;
         const that = this;
         xhr.get('/manage/api/listGoods',param).then(function (data) {
-           console.log(data);
            if(data.code==="1"){
                that.setState(state=>({
                    goods:data.data.data,
@@ -71,6 +80,7 @@ export default class ManageIndex extends Component{
                }));
            }
         });
+        this.setState(state => ({showSearchLoading: false}));
     }
 
 
@@ -85,18 +95,23 @@ export default class ManageIndex extends Component{
     selectChange2(event){
         let param = this.state.param;
         param["categoryCode"] = event;
+        param["pageNo"] = 1;
+        param["pageSize"] = 10;
+        const that = this;
         this.setState({
             param: param
+        },()=>{
+            that.searchGoodsList();
         });
     }
 
     onSearch(value){
         let param = this.state.param;
         param["productName"] = value;
-        this.setState(state=>({
-            param: param
-        }));
-        this.searchGoodsList();
+        const that = this;
+        this.setState({param: param},()=> {
+            that.searchGoodsList();
+        });
     }
 
     handleInputChange(event){
@@ -194,6 +209,10 @@ export default class ManageIndex extends Component{
     saveGoods(){
         const that = this;
         let param = this.state.param2;
+        if (param.categoryCode === 0) {
+            message.error('请选择藏品类别');
+            return;
+        }
         if (param.productName === "") {
             message.error('请输入藏品标题');
             return;
@@ -224,6 +243,7 @@ export default class ManageIndex extends Component{
         }
         xhr.post('/manage/api/saveGoods',param).then(function (data) {
             that.setState({ loading: false,visibleAddModal: false });
+            that.clearAddInput()
             that.searchGoodsList();
         });
     }
@@ -316,21 +336,67 @@ export default class ManageIndex extends Component{
     }
 
     handleAddCancel(){
+        this.clearAddInput();
+    }
+
+    clearAddInput(){
         this.setState(state=>({
-            visibleAddModal: false
+            visibleAddModal: false,
+            loading: false,
+            fileList:[],
+            param2:{
+                categoryCode:0,
+                categoryName:"",
+                productName:"",
+                visitCount:"",
+                direction:"",
+                productImages:[]
+            }
         }));
+    }
+
+    editVisitCountChange(value){
+        let param = this.state.editParam;
+        param["visitCount"] = value;
+        this.setState(state=>({
+            editParam:param
+        }));
+    }
+
+    goodsEdit(){
+
+        let param = this.state.editParam;
+        let visitCount = param.visitCount;
+        if(visitCount===""){
+            message.error('请输入藏品阅览量');
+            return;
+        }
+        param["productNo"] = this.state.editProductNo;
+        const that = this;
+        this.setState({ loading: true });
+        xhr.post('/manage/api/updateGoods',param).then(function (data) {
+            if(data.code==="1"){
+                param["visitCount"] = "";
+                param["productNo"] = "";
+                message.success("藏品阅览量修改成功");
+                that.setState({loading:false,editProductNo:"",editParam:param,showEditPop:false},()=>{
+                    that.searchGoodsList();
+                });
+            }else{
+                message.error("藏品阅览量修改失败");
+            }
+        });
     }
 
     render(){
         const {previewVisible, previewImage, fileList} = this.state;
         const categories = this.state.categories;
-        const defaultValue = this.state.param.categoryCode;
-        const defaultValue2 = this.state.param2.categoryCode;
         let items = categories.map(item=>
             <Select.Option key={item.value} value={item.value}>{item.name}</Select.Option>
         );
-        let item2 = items.concat([<Select.Option key={0} value={0}>全部</Select.Option>]);
+        items.push(<Select.Option key={0} value={0}>请选择</Select.Option>);
         const goods = this.state.goods;
+        const count = (this.state.param.pageNo - 1) * this.state.param.pageSize;
         let tbody;
         if(goods.length<=0){
             tbody= (
@@ -341,13 +407,15 @@ export default class ManageIndex extends Component{
         }else{
             tbody = goods.map((item,index)=>
                 <tr key={item.productNo}>
-                    <td>{index+1}</td>
+                    <td>{index+1+count}</td>
                     <td>{item.productNo}</td>
                     <td>{item.productName}</td>
                     <td>{item.visitCount}</td>
                     <td>{item.categoryName}</td>
                     <td>{item.direction}</td>
                     <td><a onClick={()=>this.goodsDetail(item.productNo)} href="#">详情</a>&nbsp;&nbsp;
+                        <a onClick={()=>this.setState(state=>({showEditPop:true,editProductNo:item.productNo}))}
+                           href="#">修改阅览量</a>&nbsp;&nbsp;
                         <a onClick={()=>this.showDeleteConfirm(item.productNo)} href="#">删除</a></td>
                 </tr>
             );
@@ -359,10 +427,16 @@ export default class ManageIndex extends Component{
                      key={index} src={imgPath+item}/>
             );
         }
-
+        let loading = "";
+        if (this.state.showSearchLoading) {
+            loading = (
+                <div className={"loading-box"}><Spin tip="Loading..."/></div>
+            );
+        }
         return(
 
             <div className="manage-box">
+                {loading}
                 <div className="header">
                     后台管理
                     {/*<div className=""><Link to="/">去官网</Link></div>*/}
@@ -380,10 +454,10 @@ export default class ManageIndex extends Component{
 
                     <div className="box">
                         <label>类别：</label>
-                        <Select defaultValue={defaultValue} type={"select"}
+                        <Select defaultValue={this.state.param.categoryCode} type={"select"}
                                 style={{ width: 200}}
                                 name="categoryCode"
-                                onChange={(e)=>this.selectChange2(e)}>{item2}</Select>
+                                onChange={(e)=>this.selectChange2(e)}>{items}</Select>
                     </div>
 
                     <div className="box">
@@ -442,9 +516,10 @@ export default class ManageIndex extends Component{
                             <label>类别：</label>
                         </div>
                         <div className="add-right">
-                            <Select defaultValue={defaultValue2} type={"select"}
+                            <Select defaultValue={this.state.param2.categoryCode} type={"select"}
                                     style={{ width: 400,'marginLeft':20 }}
                                     name="categoryCode"
+                                    value={this.state.param2.categoryCode}
                                     onChange={(e,option)=>this.selectChange(e,option)}>{items}</Select>
                         </div>
 
@@ -457,6 +532,7 @@ export default class ManageIndex extends Component{
                             <TextArea rows={4} placeholder="请输入藏品标题"
                                       style={{width:400,'marginLeft':20,'marginTop':20}}
                                       name={"productName"}
+                                      value={this.state.param2.productName}
                                       onChange={(e)=>this.handleInputChange(e)}/>
                         </div>
 
@@ -467,7 +543,8 @@ export default class ManageIndex extends Component{
                             <label>阅览量：</label>
                         </div>
                         <div className="add-right">
-                            <InputNumber min={1} placeholder="请输入阅览量" name={"visitCount"} defaultValue={1}
+                            <InputNumber min={1} placeholder="请输入阅览量" name={"visitCount"}
+                                         value={this.state.param2.visitCount}
                                          onChange={(e)=>this.visitCountChange(e)} />
                         </div>
 
@@ -482,6 +559,7 @@ export default class ManageIndex extends Component{
                                 <TextArea rows={4} placeholder="请输入藏品描述"
                                           style={{width:400,'marginLeft':20,'marginTop':20}}
                                           name={"direction"}
+                                          value={this.state.param2.direction}
                                           onChange={(e)=>this.handleInputChange(e)}/>
                         </div>
 
@@ -573,8 +651,34 @@ export default class ManageIndex extends Component{
 
                     </div>
                 </Modal>
+
+                <Modal
+                    visible={this.state.showEditPop}
+                    title="修改藏品阅览量"
+                    onOk={()=>this.setState(state=>({showEditPop:false,editParam:{}}))}
+                    onCancel={()=>this.setState(state=>({showEditPop:false,editParam:{}}))}
+                    footer={[
+                        <Button key="back" onClick={()=>this.setState(state=>({showEditPop:false,editParam:{}}))}>取消</Button>,
+                        <Button key="submit" type="primary" loading={this.state.loading} onClick={()=>this.goodsEdit()}>
+                            提交
+                        </Button>
+                    ]}
+                >
+                    <div className="add-row">
+                        <div className="add-left">
+                            <label>阅览量：</label>
+                        </div>
+                        <div className="add-right">
+                            <InputNumber min={1} placeholder="请输入阅览量" name={"visitCount"}
+                                         value={this.state.editParam.visitCount}
+                                         onChange={(e)=>this.editVisitCountChange(e)} />
+                        </div>
+
+                    </div>
+                </Modal>
+
             </div>
-        )
+        );
 
     }
 }
