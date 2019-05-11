@@ -19,7 +19,7 @@ function RenderGoods(props){
                 </div>
                 <div className="title">{item.productName}</div>
                 <div className="sub-title">{item.direction}</div>
-                <div className="goods-date">{item.update}</div>
+                <div className="goods-date">{item.updateDate}</div>
             </div>
         </Link>
     );
@@ -69,13 +69,11 @@ export default class WebsiteList extends Component {
     }
 
     pageChange(page, pageSize){
-        let param = this.state.param;
-        param["pageNo"] = page;
-        param["pageSize"] = pageSize;
         this.setState(state=>({
-            param:param
-        }));
-        this.listCategory();
+            pageNo:page,
+            pageSize:pageSize
+        }),()=>this.listCategory());
+
     }
 
     listCategory(){
@@ -90,7 +88,7 @@ export default class WebsiteList extends Component {
                 that.setState(state=>({
                     list: data.data.data,
                     totalCount: data.data.totalCount,
-                    totalPages: data.data.totalPages
+                    totalPages: data.data.totalPage,
                 }));
             }
         });
@@ -118,12 +116,14 @@ export default class WebsiteList extends Component {
                         <RenderGoods goods={list}></RenderGoods>
                     </div>
                     <div className="list-page-box">
-                    <Pagination defaultCurrent={this.pageNo+1}
-                                defaultPageSize={this.pageSize}
-                                current={this.pageNo+1}
-                                total={this.totalCount}
-                                hideOnSinglePage={true}
-                                onChange={(page,pageSize)=>this.pageChange(page,pageSize)}/>
+
+                        <Pagination defaultCurrent={1}
+                                    defaultPageSize={this.state.pageSize}
+                                    current={this.state.pageNo}
+                                    total={this.state.totalCount}
+                                    hideOnSinglePage={true}
+                                    onChange={(page,pageSize)=>this.pageChange(page,pageSize)}
+                        />
                     </div>
                 </div>
                 <Footer/>

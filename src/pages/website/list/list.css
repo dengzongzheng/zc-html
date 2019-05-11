@@ -38,7 +38,6 @@
 }
 
 .content-list{
-    border: 1px solid #e2e2e2;
     border-top: 2px solid #dd4444;
     padding: 8px;
     margin-top: 20px;
@@ -106,8 +105,7 @@
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     white-space: nowrap;
-    padding-left: 52px;
-    text-align: left;
+    text-align: center;
 }
 
 .list-page-box{

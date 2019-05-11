@@ -6,21 +6,24 @@ import Header from '@components/header/header';
 import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
 import xhr from '@/service/xhr/index';
-import { Carousel } from 'antd';
+import { Carousel,Row, Col } from 'antd';
 
 
-function RenderGoods(props){
+function RenderGoods2(props){
     const goods = props.goods;
     const items = goods.map((item)=>
+
         <Link to={{pathname:'/detail',state:{productNo:item.productNo}}} key={item.productNo}>
-            <div className="goods">
-                <div className="img-box">
-                    <img src={imgPath+item.productImages[0]} className="goods-img" alt=""/>
+            <Col className="gutter-row" span={8}>
+                <div className="goods">
+                    <div className="img-box">
+                        <img src={imgPath+item.productImages[0]} className="goods-img" alt=""/>
+                    </div>
+                    <div className="title">{item.productName}</div>
+                    <div className="sub-title">{item.direction}</div>
+                    <div className="goods-date">{item.updateDate}</div>
                 </div>
-                <div className="title">{item.productName}</div>
-                <div className="sub-title">{item.direction}</div>
-                <div className="goods-date">{item.update}</div>
-            </div>
+            </Col>
         </Link>
     );
     return(
@@ -92,44 +95,44 @@ export default class WebsiteIndex extends Component {
 
             <div className="content-box">
 
-                <div className="content">
-                    <div className="content-header">
-                        <span className="head-line"/><label>重点推荐</label>
-                    </div>
-                    <RenderGoods goods={recommended}/>
+                <div className="content-header">
+                    <span className="head-line"/><label>重点推荐</label>
                 </div>
+                <Row gutter={16}>
+                    <RenderGoods2 goods={recommended}/>
+                </Row>
 
-                <div className="content">
-                    <div className="content-header">
-                        <span className="head-line"/><label>磁器</label>
-                        <Link to={{pathname:"/list",state: {category:1}}}>更多磁器</Link>
-                    </div>
-                    <RenderGoods goods={jades}/>
+                <div className="content-header">
+                    <span className="head-line"/><label>磁器</label>
+                    <Link to={{pathname:"/list",state: {category:1}}}>更多磁器</Link>
                 </div>
+                <Row gutter={16}>
+                    <RenderGoods2 goods={jades}/>
+                </Row>
 
-                <div className="content">
-                    <div className="content-header">
-                        <span className="head-line"/><label>玉器</label>
-                        <Link to={{pathname:"/list",state: {category:2}}}>更多玉器</Link>
-                    </div>
-                    <RenderGoods goods={porcelains}/>
+                <div className="content-header">
+                    <span className="head-line"/><label>玉器</label>
+                    <Link to={{pathname:"/list",state: {category:2}}}>更多玉器</Link>
                 </div>
+                <Row gutter={16}>
+                    <RenderGoods2 goods={porcelains}/>
+                </Row>
 
-                <div className="content">
-                    <div className="content-header">
-                        <span className="head-line"/><label>书画</label>
-                        <Link to={{pathname:"/list",state: {category:3}}}>更多书画</Link>
-                    </div>
-                    <RenderGoods goods={pictures}/>
+                <div className="content-header">
+                    <span className="head-line"/><label>书画</label>
+                    <Link to={{pathname:"/list",state: {category:3}}}>更多书画</Link>
                 </div>
+                <Row gutter={16}>
+                    <RenderGoods2 goods={pictures}/>
+                </Row>
 
-                <div className="content">
-                    <div className="content-header">
-                        <span className="head-line"/><label>杂项</label>
-                        <Link to={{pathname:"/list",state: {category:4}}}>更多杂项</Link>
-                    </div>
-                    <RenderGoods goods={others}/>
+                <div className="content-header">
+                    <span className="head-line"/><label>杂项</label>
+                    <Link to={{pathname:"/list",state: {category:4}}}>更多杂项</Link>
                 </div>
+                <Row gutter={16}>
+                    <RenderGoods2 goods={others}/>
+                </Row>
 
             </div>
 
