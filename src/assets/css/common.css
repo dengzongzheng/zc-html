@@ -1,11 +1,14 @@
 body {
     padding: 0;
     margin: 0;
-    background: #fff;
+    background: #F4F0ED;
     padding-inline-start: 0px !important;
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
     font-size: 12px;
     min-width:1024px;
+    background-image: url(../../assets/images/bg.png);
+    background-repeat: repeat-y;
+    background-size: contain;
 }
 
 a{

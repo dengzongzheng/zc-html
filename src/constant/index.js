@@ -1,7 +1,7 @@
 const categories =
     [
         {
-            name:"磁器",
+            name:"瓷器",
             value:1
         },
         {

@@ -5,21 +5,24 @@ import Nav from '@components/nav/nav2';
 import Footer from '@components/footer/footer';
 import {Link} from "react-router-dom";
 import {imgPath} from "@/service/xhr/config";
-import {Pagination} from 'antd';
+import {Col, Pagination} from 'antd';
 import xhr from '@/service/xhr/index';
 import {categories} from '@/constant/index'
 
 function RenderGoods(props){
     const goods = props.goods;
     const items = goods.map((item)=>
-        <Link to={{pathname:"/detail",state:{productNo:item.productNo}}} key={item.productNo}>
-            <div className="goods">
-                <div className="img-box">
-                    <img src={imgPath+item.productImages[0]} className="goods-img" alt=""/>
+
+        <Link to={{pathname:'/detail',state:{productNo:item.productNo}}} key={item.productNo}>
+            <Col className="gutter-row" span={6}>
+                <div className="goods">
+                    <div className="img-box">
+                        <img src={imgPath+item.productImages[0]} className="goods-img" alt=""/>
+                    </div>
+                    <div className="title">{item.productName}</div>
+                    <div className="sub-title">{item.direction}</div>
                 </div>
-                <div className="title">{item.productName}</div>
-                <div className="sub-title">{item.direction}</div>
-            </div>
+            </Col>
         </Link>
     );
     return(
@@ -40,7 +43,7 @@ export default class WebsiteList extends Component {
             ],
             totalPages:1,
             pageNo:1,
-            pageSize:10,
+            pageSize:8,
             totalCount:0,
             categoryCode: 1,
             categoryName:""
@@ -108,19 +111,17 @@ export default class WebsiteList extends Component {
                 <Header/>
                 <Nav switchCategory={(value)=>this.switchCategory(value)}/>
                 <div className="content-box">
-                    <div className="content">
-                        <div className="content-header">
-                            <span className="head-line"/><label>{categoryName}</label>
-                        </div>
-                        <RenderGoods goods={list}></RenderGoods>
+                    <div className="content-header">
+                        <span className="head-line"/><label>{categoryName}</label>
                     </div>
+                    <RenderGoods goods={list}></RenderGoods>
                     <div className="list-page-box">
 
                         <Pagination defaultCurrent={1}
                                     defaultPageSize={this.state.pageSize}
                                     current={this.state.pageNo}
                                     total={this.state.totalCount}
-                                    hideOnSinglePage={true}
+                                    // hideOnSinglePage={true}
                                     onChange={(page,pageSize)=>this.pageChange(page,pageSize)}
                         />
                     </div>
