@@ -102,6 +102,7 @@ export default class WebsiteIndex extends Component {
 
                 <div className="content-header">
                     <span className="head-line"/><label>重点推荐</label>
+                    <Link className={"float-none"} to={{pathname:"/list",state: {category:5}}}>更多重点推荐</Link>
                     <Search
                         placeholder="请输入您要搜索的藏品信息"
                         enterButton="搜索"

@@ -31,6 +31,11 @@
     font-weight: lighter;
 }
 
+.float-none{
+    float: none !important;
+    margin-left: 10px;
+}
+
 .head-line{
     margin-right: 15px;
     width: 5px;
