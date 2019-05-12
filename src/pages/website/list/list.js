@@ -48,15 +48,16 @@ export default class WebsiteList extends Component {
             categoryCode: 1,
             categoryName:""
         }
-        this.listCategory();
     }
     componentDidMount() {
         try {
             const categoryCode = this.props.location.state.category;
+            const that = this;
             this.setState(state=>({
                 categoryCode:categoryCode
-            }));
-            console.log("aaa=="+categoryCode);
+            }),()=>{
+                that.listCategory();
+            });
         }catch (e) {
 
         }
@@ -86,7 +87,7 @@ export default class WebsiteList extends Component {
         const that = this;
         xhr.get('/api/listCategory',param).then(function (data) {
             console.log(data);
-            if(data.code=="1"){
+            if(data.code==="1"){
                 that.setState(state=>({
                     list: data.data.data,
                     totalCount: data.data.totalCount,
@@ -101,7 +102,7 @@ export default class WebsiteList extends Component {
         let categoryName = "";
         const categoryCode = this.state.categoryCode;
         for(let index in categories){
-            if(categories[index].value==categoryCode){
+            if(categories[index].value===categoryCode){
                 categoryName = categories[index].name;
                 break;
             }
@@ -114,7 +115,7 @@ export default class WebsiteList extends Component {
                     <div className="content-header">
                         <span className="head-line"/><label>{categoryName}</label>
                     </div>
-                    <RenderGoods goods={list}></RenderGoods>
+                    <RenderGoods goods={list}/>
                     <div className="list-page-box">
 
                         <Pagination defaultCurrent={1}

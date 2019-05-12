@@ -5,6 +5,7 @@ import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
 import xhr from '@/service/xhr/index';
 import {imgPath} from "@/service/xhr/config";
+import Zmage from 'react-zmage'
 
 export default class WebsiteDetail extends Component{
 
@@ -57,7 +58,7 @@ export default class WebsiteDetail extends Component{
         const detailData = (
             <div className="detail-content-box">
                 <div className="left-box">
-                    <img src={imgPath+currentImg} className="detail-goods-img"/>
+                    <Zmage src={imgPath+currentImg} className="detail-goods-img"/>
                     <div className="spec-list" clstag="shangpin|keycount|product|lunbotu_2">
                         <a id="spec-forward" href="javascript:;" className="arrow-prev disabled">
                             <i className="sprite-arrow-prev"/>
