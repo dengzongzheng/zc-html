@@ -15,6 +15,10 @@ const categories =
         {
             name:"杂项",
             value:4
+        },
+        {
+            name:"重点推荐",
+            value: 5
         }
     ];
 

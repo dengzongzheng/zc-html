@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import './list.css';
 import Header from '@components/header/header';
-import Nav from '@components/nav/nav2';
+import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
 import {Link} from "react-router-dom";
 import {imgPath} from "@/service/xhr/config";
@@ -13,7 +13,7 @@ function RenderGoods(props){
     const goods = props.goods;
     if (goods.length < 1) {
         return (
-            <Empty />
+            <Empty description={"未搜索到相关数据"}/>
         )
     }
     const items = goods.map((item)=>

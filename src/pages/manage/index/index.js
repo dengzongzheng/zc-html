@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Lifecycle, RouteContext} from 'react-router';
 import './index.css';
-import '../add/add.css'
+import '../add/add.css';
 import {categories} from '@/constant/index';
 import {Link} from "react-router-dom";
 import {Button, Pagination, message, Input,Spin, Select, Popconfirm, Modal, Upload, Icon,InputNumber} from 'antd';
@@ -10,6 +10,7 @@ const Search = Input.Search;
 const confirm = Modal.confirm;
 import * as Action from "@/store/token-action";
 import {rootPath,imgPath} from "@/service/xhr/config";
+import Zmage from 'react-zmage';
 
 const { TextArea } = Input;
 const uploadButton = (
@@ -423,8 +424,7 @@ export default class ManageIndex extends Component{
         let images;
         if (this.state.detail.productImages) {
             images = this.state.detail.productImages.map((item,index)=>
-                <img alt="example" className="preview-img" onClick={()=>this.detailPreview(item)}
-                     key={index} src={imgPath+item}/>
+                <Zmage alt="example" className="preview-img" key={index} src={imgPath+item}/>
             );
         }
         let loading = "";
@@ -601,8 +601,8 @@ export default class ManageIndex extends Component{
                         <Button key="back" onClick={()=>this.setState(state=>({showDetailPop:false}))}>关闭</Button>,
                     ]}
                 >
-                    <div className="add-row">
-                        <div className="add-left">
+                    <div className="line-height">
+                        <div className="add-left-2">
                             <label>类别：</label>
                         </div>
                         <div className="add-right">
@@ -610,8 +610,8 @@ export default class ManageIndex extends Component{
                         </div>
 
                     </div>
-                    <div className="add-row-2">
-                        <div className="add-left">
+                    <div className="line-height">
+                        <div className="add-left-2">
                             <label>标题：</label>
                         </div>
                         <div className="add-right">
@@ -620,8 +620,8 @@ export default class ManageIndex extends Component{
 
                     </div>
 
-                    <div className="add-row">
-                        <div className="add-left">
+                    <div className="line-height">
+                        <div className="add-left-2">
                             <label>阅览量：</label>
                         </div>
                         <div className="add-right">
@@ -631,8 +631,8 @@ export default class ManageIndex extends Component{
                     </div>
 
 
-                    <div className="add-row-2">
-                        <div className="add-left">
+                    <div className="line-height">
+                        <div className="add-left-2">
                             <label>描述：</label>
                         </div>
                         <div className="add-right">
@@ -641,11 +641,11 @@ export default class ManageIndex extends Component{
 
                     </div>
 
-                    <div className="add-row-3">
-                        <div className="add-left">
+                    <div className="line-height">
+                        <div className="add-left-2">
                             <label>图片：</label>
                         </div>
-                        <div className="add-right input2">
+                        <div className="add-right">
                             {images}
                         </div>
 

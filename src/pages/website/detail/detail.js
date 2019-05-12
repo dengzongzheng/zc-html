@@ -5,7 +5,7 @@ import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
 import xhr from '@/service/xhr/index';
 import {imgPath} from "@/service/xhr/config";
-import Zmage from 'react-zmage'
+import Zmage from 'react-zmage';
 
 export default class WebsiteDetail extends Component{
 
