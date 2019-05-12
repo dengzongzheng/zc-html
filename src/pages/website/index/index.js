@@ -14,14 +14,13 @@ function RenderGoods2(props){
     const items = goods.map((item)=>
 
         <Link to={{pathname:'/detail',state:{productNo:item.productNo}}} key={item.productNo}>
-            <Col className="gutter-row" span={8}>
+            <Col className="gutter-row" span={6}>
                 <div className="goods">
                     <div className="img-box">
                         <img src={imgPath+item.productImages[0]} className="goods-img" alt=""/>
                     </div>
                     <div className="title">{item.productName}</div>
                     <div className="sub-title">{item.direction}</div>
-                    <div className="goods-date">{item.updateDate}</div>
                 </div>
             </Col>
         </Link>
@@ -63,7 +62,7 @@ export default class WebsiteIndex extends Component {
         const that = this;
         xhr.get('/api/listHome',param).then(function (data) {
             console.log(data);
-            if(data.code=="1"){
+            if(data.code==="1"){
                 that.setState(state=>({
                     jades: data.data.jades,
                     porcelains: data.data.porcelains,
@@ -103,11 +102,11 @@ export default class WebsiteIndex extends Component {
                 </Row>
 
                 <div className="content-header">
-                    <span className="head-line"/><label>磁器</label>
-                    <Link to={{pathname:"/list",state: {category:1}}}>更多磁器</Link>
+                    <span className="head-line"/><label>瓷器</label>
+                    <Link to={{pathname:"/list",state: {category:1}}}>更多瓷器</Link>
                 </div>
                 <Row gutter={16}>
-                    <RenderGoods2 goods={jades}/>
+                    <RenderGoods2 goods={porcelains}/>
                 </Row>
 
                 <div className="content-header">
@@ -115,7 +114,7 @@ export default class WebsiteIndex extends Component {
                     <Link to={{pathname:"/list",state: {category:2}}}>更多玉器</Link>
                 </div>
                 <Row gutter={16}>
-                    <RenderGoods2 goods={porcelains}/>
+                    <RenderGoods2 goods={jades}/>
                 </Row>
 
                 <div className="content-header">

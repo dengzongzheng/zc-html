@@ -1,11 +1,12 @@
 .nav-box {
     height: 42px;
-    background: #e44;
+    background: #d11;
     padding-left: 132px;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 24px;
     color: #fff;
     font-weight: bold;
+    font-family: STXingkai, serif;
 }
 
 .nav-box ul{

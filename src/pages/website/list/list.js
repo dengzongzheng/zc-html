@@ -19,7 +19,6 @@ function RenderGoods(props){
                 </div>
                 <div className="title">{item.productName}</div>
                 <div className="sub-title">{item.direction}</div>
-                <div className="goods-date">{item.updateDate}</div>
             </div>
         </Link>
     );
