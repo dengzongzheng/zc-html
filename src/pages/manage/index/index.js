@@ -138,7 +138,7 @@ export default class ManageIndex extends Component{
         let param = this.state.editParam;
         param[name] = value;
         this.setState({
-            param: param
+            editParam: param
         });
     }
 
