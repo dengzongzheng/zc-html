@@ -10,7 +10,9 @@
 }
 
 .content-header{
-    height: 34px;
+    height: 50px;
+    border-bottom: 2px solid #dd4444;
+    line-height: 50px;
 }
 
 .content-header label{
@@ -38,7 +40,6 @@
 }
 
 .content-list{
-    border-top: 2px solid #dd4444;
     padding: 8px;
     margin-top: 20px;
 }

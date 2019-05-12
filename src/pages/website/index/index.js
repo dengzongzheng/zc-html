@@ -6,8 +6,9 @@ import Header from '@components/header/header';
 import Nav from '@components/nav/nav';
 import Footer from '@components/footer/footer';
 import xhr from '@/service/xhr/index';
-import { Carousel,Row, Col } from 'antd';
+import { Carousel,Row, Col,Input } from 'antd';
 
+const Search = Input.Search;
 
 function RenderGoods2(props){
     const goods = props.goods;
@@ -74,6 +75,11 @@ export default class WebsiteIndex extends Component {
         });
     }
 
+    searchGoods(value){
+        console.log(value);
+        this.props.history.push({pathname:'/search',state:{param:value}});
+    }
+
     render() {
         const jades = this.state.jades;
         const porcelains = this.state.porcelains;
@@ -96,6 +102,13 @@ export default class WebsiteIndex extends Component {
 
                 <div className="content-header">
                     <span className="head-line"/><label>重点推荐</label>
+                    <Search
+                        placeholder="请输入您要搜索的藏品信息"
+                        enterButton="搜索"
+                        size="large"
+                        style={{ width: 600,float:"right" }}
+                        onSearch={(value) => this.searchGoods(value)}
+                    />
                 </div>
                 <Row gutter={16}>
                     <RenderGoods2 goods={recommended}/>
