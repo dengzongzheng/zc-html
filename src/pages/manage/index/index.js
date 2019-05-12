@@ -42,7 +42,12 @@ export default class ManageIndex extends Component{
             showEditPop:false,
             editProductNo:"",
             editParam:{
+                categoryCode:0,
+                categoryName:"",
+                productName:"",
                 visitCount: "",
+                direction:"",
+                productImages:[],
                 productNo:""
             },
             detail:{},
@@ -120,6 +125,17 @@ export default class ManageIndex extends Component{
         const value = target.value;
         const name = target.name;
         let param = this.state.param;
+        param[name] = value;
+        this.setState({
+            param: param
+        });
+    }
+
+    handleEditInputChange(event){
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        let param = this.state.editParam;
         param[name] = value;
         this.setState({
             param: param
@@ -285,6 +301,15 @@ export default class ManageIndex extends Component{
         });
     }
 
+    editSelectChange(event,option){
+        let param = this.state.editParam;
+        param["categoryCode"] = event;
+        param["categoryName"] = option.props.children;
+        this.setState({
+            editParam: param
+        });
+    }
+
 
     handleFileSaveChange(event) {
 
@@ -301,7 +326,23 @@ export default class ManageIndex extends Component{
         this.setState(state=>({
             fileList:event.fileList
         }));
-        console.log(this.state.param2);
+    }
+
+    editHandleFileSaveChange(event) {
+
+        const response = event.file.response;
+        if(response && response.code==="1"){
+            let param = this.state.editParam;
+            let productImages =  param.productImages;
+            productImages.push(response.data.fileName);
+            param.productImages = productImages;
+            this.setState(state=>({
+                editParam:param
+            }));
+        }
+        this.setState(state=>({
+            fileList:event.fileList
+        }));
     }
 
     visitCountChange(value){
@@ -329,6 +370,21 @@ export default class ManageIndex extends Component{
         }
         this.setState(state=>({
             param2:param
+        }));
+    }
+
+    editRemoveHandler(e){
+        const imageName = e.name;
+        let param = this.state.editParam;
+        let productImages =  param.productImages;
+        for (let i = 0; i < productImages.length; i++) {
+            if (productImages[i] === imageName){
+                productImages.splice(i, 1);
+                break;
+            }
+        }
+        this.setState(state=>({
+            editParam:param
         }));
     }
 
@@ -364,6 +420,43 @@ export default class ManageIndex extends Component{
         }));
     }
 
+    toEdit(productNo) {
+        const goods = this.state.goods;
+        let data;
+        for(let index in goods){
+            if(goods[index].productNo===productNo){
+                data = goods[index];
+                break;
+            }
+        }
+        let editParam = this.state.editParam;
+        editParam.visitCount = data.visitCount;
+        editParam.categoryCode = data.categoryCode;
+        editParam.categoryName = data.categoryName;
+        editParam.direction = data.direction;
+        editParam.productName = data.productName;
+        editParam.productImages = data.productImages;
+        editParam.productNo = data.productNo;
+        this.setState(state => ({
+            showEditPop: true,
+            editParam: editParam
+        }));
+    }
+
+    editDeleteImage(imageName){
+        let param = this.state.editParam;
+        let productImages =  param.productImages;
+        for (let i = 0; i < productImages.length; i++) {
+            if (productImages[i] === imageName){
+                productImages.splice(i, 1);
+                break;
+            }
+        }
+        this.setState(state=>({
+            editParam:param
+        }));
+    }
+
     goodsEdit(){
 
         let param = this.state.editParam;
@@ -372,7 +465,27 @@ export default class ManageIndex extends Component{
             message.error('请输入藏品阅览量');
             return;
         }
-        param["productNo"] = this.state.editProductNo;
+        if (param.categoryCode === 0) {
+            message.error('请选择藏品类别');
+            return;
+        }
+        if (param.productName === "") {
+            message.error('请输入藏品标题');
+            return;
+        }
+        if (param.visitCount === "") {
+            message.error('请输入藏品阅览量');
+            return;
+        }
+        if (param.direction === "") {
+            message.error('请输入藏品描述');
+            return;
+        }
+        if (param.productImages.length < 1) {
+            message.error('请上传藏品图片');
+            return;
+        }
+
         const that = this;
         this.setState({ loading: true });
         xhr.post('/manage/api/updateGoods',param).then(function (data) {
@@ -415,8 +528,8 @@ export default class ManageIndex extends Component{
                     <td>{item.categoryName}</td>
                     <td>{item.direction}</td>
                     <td><a onClick={()=>this.goodsDetail(item.productNo)} href="#">详情</a>&nbsp;&nbsp;
-                        <a onClick={()=>this.setState(state=>({showEditPop:true,editProductNo:item.productNo}))}
-                           href="#">修改阅览量</a>&nbsp;&nbsp;
+                        <a onClick={()=>this.toEdit(item.productNo)}
+                           href="#">修改</a>&nbsp;&nbsp;
                         <a onClick={()=>this.showDeleteConfirm(item.productNo)} href="#">删除</a></td>
                 </tr>
             );
@@ -425,6 +538,16 @@ export default class ManageIndex extends Component{
         if (this.state.detail.productImages) {
             images = this.state.detail.productImages.map((item,index)=>
                 <Zmage alt="example" className="preview-img" key={index} src={imgPath+item}/>
+            );
+        }
+        let editImages;
+        if (this.state.editParam.productImages) {
+            editImages = this.state.editParam.productImages.map((item,index)=>
+                <div className={"delete-img-box"} key={item}>
+                    <Zmage alt="example" className="preview-img" src={imgPath+item}/>
+                    <Icon type="delete" theme="twoTone" onClick={()=>this.editDeleteImage(item)}
+                          style={{fontSize: "20px",display: "block",marginTop:"4",cursor:"pointer"}} />
+                </div>
             );
         }
         let loading = "";
@@ -654,7 +777,7 @@ export default class ManageIndex extends Component{
 
                 <Modal
                     visible={this.state.showEditPop}
-                    title="修改藏品阅览量"
+                    title="修改藏品"
                     onOk={()=>this.setState(state=>({showEditPop:false,editParam:{}}))}
                     onCancel={()=>this.setState(state=>({showEditPop:false,editParam:{}}))}
                     footer={[
@@ -666,12 +789,77 @@ export default class ManageIndex extends Component{
                 >
                     <div className="add-row">
                         <div className="add-left">
+                            <label>类别：</label>
+                        </div>
+                        <div className="add-right">
+                            <Select defaultValue={this.state.editParam.categoryCode} type={"select"}
+                                    style={{ width: 400,'marginLeft':20 }}
+                                    name="categoryCode"
+                                    value={this.state.editParam.categoryCode}
+                                    onChange={(e,option)=>this.editSelectChange(e,option)}>{items}</Select>
+                        </div>
+
+                    </div>
+
+                    <div className="add-row-2">
+                        <div className="add-left">
+                            <label>标题：</label>
+                        </div>
+                        <div className="add-right">
+                            <TextArea rows={4} placeholder="请输入藏品标题"
+                                      style={{width:400,'marginLeft':20,'marginTop':20}}
+                                      name={"productName"}
+                                      value={this.state.editParam.productName}
+                                      onChange={(e)=>this.handleEditInputChange(e)}/>
+                        </div>
+
+                    </div>
+
+                    <div className="add-row">
+                        <div className="add-left">
                             <label>阅览量：</label>
                         </div>
                         <div className="add-right">
                             <InputNumber min={1} placeholder="请输入阅览量" name={"visitCount"}
                                          value={this.state.editParam.visitCount}
                                          onChange={(e)=>this.editVisitCountChange(e)} />
+                        </div>
+
+                    </div>
+
+                    <div className="add-row-2">
+                        <div className="add-left">
+                            <label>描述：</label>
+                        </div>
+                        <div className="add-right">
+                                <TextArea rows={4} placeholder="请输入藏品描述"
+                                          style={{width:400,'marginLeft':20,'marginTop':20}}
+                                          name={"direction"}
+                                          value={this.state.editParam.direction}
+                                          onChange={(e)=>this.handleEditInputChange(e)}/>
+                        </div>
+
+                    </div>
+
+                    <div className="add-row-3">
+                        <div className="add-left">
+                            <label>图片：</label>
+                        </div>
+                        <div className="add-right input2">
+                            {editImages}
+                            <Upload
+                                action={rootPath+"/file/upload"}
+                                listType="picture-card"
+                                style={{width: '100%', height:104}}
+                                fileList={this.state.fileList}
+                                onPreview={(e)=>this.handlePreview(e)}
+                                name={"files"}
+                                data={(e)=>this.completeHandle(e)}
+                                onChange={(e)=>this.editHandleFileSaveChange(e)}
+                                onRemove={(e)=>this.editRemoveHandler(e)}
+                            >
+                                {this.state.fileList.length >= 10 ? null : uploadButton}
+                            </Upload>
                         </div>
 
                     </div>
