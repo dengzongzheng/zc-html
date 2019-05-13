@@ -21,5 +21,6 @@ const categories =
             value: 5
         }
     ];
+const title = "臻藏艺术收藏";
 
-export {categories};
+export {categories,title};

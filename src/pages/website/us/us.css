@@ -1,0 +1,22 @@
+.us-img{
+    width: 100%;
+}
+
+
+
+.us-line {
+    width: 100%;
+    padding-top: 50px;
+    text-align: center;
+
+}
+
+.us-text{
+    padding: 0px 132px;
+    /*background: white;*/
+    line-height: 42px;
+}
+
+.us-box{
+    /*margin: 0 132px;*/
+}

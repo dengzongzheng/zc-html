@@ -30,6 +30,7 @@ export default class Nav extends Component{
                     <li><Link to={{pathname:"/list",state: {category:3}}}>书画</Link></li>
                     <li><Link to={{pathname:"/list",state: {category:4}}}>杂项</Link></li>
                     <li><Link to="/about">联系我们</Link></li>
+                    <li><Link to="/us">关于我们</Link></li>
                 </ul>
             </div>
         );

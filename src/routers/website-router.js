@@ -5,6 +5,7 @@ import Search from '@pages/website/search/list';
 import Login from '@pages/manage/login/login';
 import About from '@pages/website/about/about';
 import Test from '@pages/manage/test/test';
+import Us from '@pages/website/us/us';
 const routers = [
     {
         path:'/',
@@ -40,6 +41,11 @@ const routers = [
         path: '/search',
         exact:true,
         component:Search
+    },
+    {
+        path: '/us',
+        exact:true,
+        component:Us
     }
 ];
 
