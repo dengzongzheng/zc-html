@@ -47,6 +47,7 @@ export default class ManageIndex extends Component{
                 productName:"",
                 visitCount: "",
                 direction:"",
+                price:"",
                 productImages:[],
                 productNo:""
             },
@@ -64,6 +65,7 @@ export default class ManageIndex extends Component{
                 productName:"",
                 visitCount:"",
                 direction:"",
+                price:"",
                 productImages:[]
             }
         }
@@ -232,6 +234,10 @@ export default class ManageIndex extends Component{
         }
         if (param.productName === "") {
             message.error('请输入藏品标题');
+            return;
+        }
+        if (param.price === "") {
+            message.error('请输入藏品价格');
             return;
         }
         if (param.visitCount === "") {
@@ -407,6 +413,7 @@ export default class ManageIndex extends Component{
                 productName:"",
                 visitCount:"",
                 direction:"",
+                price:"",
                 productImages:[]
             }
         }));
@@ -434,6 +441,7 @@ export default class ManageIndex extends Component{
         editParam.categoryCode = data.categoryCode;
         editParam.categoryName = data.categoryName;
         editParam.direction = data.direction;
+        editParam.price = data.price;
         editParam.productName = data.productName;
         editParam.productImages = data.productImages;
         editParam.productNo = data.productNo;
@@ -471,6 +479,10 @@ export default class ManageIndex extends Component{
         }
         if (param.productName === "") {
             message.error('请输入藏品标题');
+            return;
+        }
+        if (param.price === "") {
+            message.error('请输入藏品价格');
             return;
         }
         if (param.visitCount === "") {
@@ -524,6 +536,7 @@ export default class ManageIndex extends Component{
                     <td>{index+1+count}</td>
                     <td>{item.productNo}</td>
                     <td>{item.productName}</td>
+                    <td>{item.price}</td>
                     <td>{item.visitCount}</td>
                     <td>{item.categoryName}</td>
                     <td>{item.direction}</td>
@@ -599,6 +612,7 @@ export default class ManageIndex extends Component{
                                 <th>序号</th>
                                 <th>编号</th>
                                 <th>标题</th>
+                                <th>价格</th>
                                 <th>阅览量</th>
                                 <th>类别</th>
                                 <th>描述</th>
@@ -656,6 +670,20 @@ export default class ManageIndex extends Component{
                                       style={{width:400,'marginLeft':20,'marginTop':20}}
                                       name={"productName"}
                                       value={this.state.param2.productName}
+                                      onChange={(e)=>this.handleInputChange(e)}/>
+                        </div>
+
+                    </div>
+
+                    <div className="add-row-2">
+                        <div className="add-left">
+                            <label>价格：</label>
+                        </div>
+                        <div className="add-right">
+                            <Input rows={4} placeholder="请输入藏品价格"
+                                      style={{width:400,'marginLeft':20,'marginTop':20}}
+                                      name={"price"}
+                                      value={this.state.param2.price}
                                       onChange={(e)=>this.handleInputChange(e)}/>
                         </div>
 
@@ -745,6 +773,16 @@ export default class ManageIndex extends Component{
 
                     <div className="line-height">
                         <div className="add-left-2">
+                            <label>价格：</label>
+                        </div>
+                        <div className="add-right">
+                            {this.state.detail.price}
+                        </div>
+
+                    </div>
+
+                    <div className="line-height">
+                        <div className="add-left-2">
                             <label>阅览量：</label>
                         </div>
                         <div className="add-right">
@@ -811,6 +849,20 @@ export default class ManageIndex extends Component{
                                       name={"productName"}
                                       value={this.state.editParam.productName}
                                       onChange={(e)=>this.handleEditInputChange(e)}/>
+                        </div>
+
+                    </div>
+
+                    <div className="add-row-2">
+                        <div className="add-left">
+                            <label>价格：</label>
+                        </div>
+                        <div className="add-right">
+                            <Input rows={4} placeholder="请输入藏品价格"
+                                   style={{width:400,'marginLeft':20,'marginTop':20}}
+                                   name={"price"}
+                                   value={this.state.editParam.price}
+                                   onChange={(e)=>this.handleEditInputChange(e)}/>
                         </div>
 
                     </div>
