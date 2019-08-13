@@ -94,7 +94,7 @@ export default class WebsiteIndex extends Component {
             <Nav/>
             <div className="content-box-swapper">
                 <Carousel effect="fade" autoplay={true} dots={true}>
-                    <div className="swapper-img2"><img src={imgPath+"swaper1.jpg"}/></div>
+                    {/*<div className="swapper-img2"><img src={imgPath+"swaper1.jpg"}/></div>*/}
                     <div className="swapper-img2"><img src={imgPath+"swaper2.jpg"}/></div>
                 </Carousel>
             </div>
