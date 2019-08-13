@@ -34,22 +34,22 @@ export default class extends Component {
 
             <hr className="hr" />
 
-            <div className="call-box">
-                <div className="location">
-                    <ul>
-                        <li>地址：湖北省武汉市武昌区徐东大街福星惠誉国际城</li>
+            {/*<div className="call-box">*/}
+                {/*<div className="location">*/}
+                    {/*<ul>*/}
+                        {/*<li>地址：湖北省武汉市武昌区徐东大街福星惠誉国际城</li>*/}
 
-                    </ul>
+                    {/*</ul>*/}
 
-                </div>
+                {/*</div>*/}
 
-                <div className="call-us">
-                    <ul>
-                        <li>电话：+86 15072311132</li>
-                    </ul>
+                {/*<div className="call-us">*/}
+                    {/*<ul>*/}
+                        {/*<li>电话：+86 15072311132</li>*/}
+                    {/*</ul>*/}
 
-                </div>
-            </div>
+                {/*</div>*/}
+            {/*</div>*/}
 
 
 

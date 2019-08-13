@@ -26,7 +26,7 @@ function RenderGoods(props){
                     </div>
                     <div className="title">{item.productName}</div>
                     <div className="sub-title">{item.direction}</div>
-                    <div className="sub-price">价格:{item.price}</div>
+                    {/*<div className="sub-price">价格:{item.price}</div>*/}
                 </div>
             </Col>
         </Link>
